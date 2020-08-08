@@ -1,0 +1,5 @@
+//stinrg型からlong long型への変換はstoll
+//stinrg型からint型への変換はatoi
+//ただし、引数はstring型のSについて、S.c_str()としてchar型配列にする必要あり
+//また、string型の一部の要素を取り出したいときは.substr(取り出す部分の初め, 取り出す要素数)とする
+//つまり、string s = string;の時、s.substr(0, 3) = str, s.substr(3, 1) = i　となる。

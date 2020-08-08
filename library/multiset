@@ -1,0 +1,12 @@
+multiset<型>　変数　で使える
+multisetの中では昇順に重複を許して格納されている
+priority_queueとsetの融合版みたいな
+multiset<long long> s;とすると
+s.insert(値)で追加
+s.find(値)で所属判定(イテレータが返ってくる)
+s.find(x) == s.end()で所属していない
+s.count(x)でxが何個あるか返す
+s.erase(x)で複数個のxをまとめて消去
+s.erase(s.find(x))でxを一個だけ消去
+s.begin()で先頭のイテレータ->*s.begin()で最小値を与える
+s.begin()で末尾のイテレータ->*(--s.end())で最大値を与える
