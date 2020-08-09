@@ -9,6 +9,10 @@ bool same(double a, double b){
     if(abs(a - b) < EPS) return true;
     return false;
 }
+bool comp(P &a, P &b){
+    if(!same(a.real(), b.real())) return a.real() < b.real();
+    return a.imag() < b.imag(); 
+}
 double juze(double a){
     if(abs(a) < EPS) return 0;
     else return a;
@@ -22,10 +26,7 @@ double det(P a, P b){
 }
 vector<P> p;
 vector<P> totuho(int n){
-    sort(p.begin(), p.end(), [&](P a, P b){
-        if(!same(a.real(), b.real())) return a.real() < b.real();
-        return a.imag() < b.imag(); 
-    });
+    sort(p.begin(), p.end(), comp);
     int k = 0;
     vector<P> qs(n * 2);
     for(int i = 0; i < n; i++){//下側凸包
@@ -38,4 +39,29 @@ vector<P> totuho(int n){
     }
     qs.resize(k - 1);
     return qs;
+}
+int N;
+double dis(P x, P y){
+    return det(x - y, x - y);
+}
+void solve(){
+    vector<P> qs = totuho(N);
+    int n = qs.size();
+    if(n == 2){//凸包が直線の時
+        printf("%.0f\n", dis(qs[0], qs[1]));
+        return;
+    }
+    int s = 0, t = 0;
+    for(int k = 0; k < n; k++){
+        if(!comp(qs[s], qs[k])) s = k;
+        if(comp(qs[t], qs[k])) t = k; 
+    }
+    double res = 0;
+    int sts = s, stt = t;
+    while(s != stt || t != sts){
+        res = max(res, dis(qs[s], qs[t]));
+        if(det(qs[(s + 1) % n] - qs[s], qs[(t + 1) % n] - qs[t]) < 0) s = (s + 1) % n;
+        else t = (t + 1) % n;
+    }
+    printf("%.0f\n", res);
 }
