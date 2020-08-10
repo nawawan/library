@@ -37,3 +37,18 @@ int main(){
     });
     for(int i = 0; i < 8; i++) cout << vec[i].real() << ' ' << vec[i].imag() << endl;
 }
+    bool same(double a, double b){
+        if(abs(a - b) < EPS) return true;
+        return false;
+    }
+    double juze(double a){
+        if(abs(a) < EPS) return 0;
+        else return a;
+    }
+    double dot(P a, P b){
+        return juze(real(a * conj(b)));
+    }
+    double det(P a, P b){
+        P c = P(b.imag(), b.real());
+        return juze(real(a * c));
+    }
