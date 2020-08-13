@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct UnionFind{//雛形を与える(初期化と結合のみ)
+struct UnionFind{
     vector<int> par;//親(根)
     vector<int> rank;//木の深さ
 
