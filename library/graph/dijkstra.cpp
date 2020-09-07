@@ -1,44 +1,48 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef pair<int, int> P;
-long long INF = 1e14;
 struct edge{
     int to;
-    int cost;
+    long long cost;
 };
-int N, M;//Vは頂点、Eは辺の数
-void solve(){//priority_queueを用いる
-    long long d[N];//各頂点までの距離
-    priority_queue<P, vector<P>, greater<P>> que;
-    vector<edge> G[N];
-    fill(d, d + N, INF);
-    for(int i = 0; i < M; i++){
-        int a, b, cs;
-        cin >> a >> b >> cs;
-        a--;
-        b--;
-        edge e = {a, cs}, e2 = {b, cs};
-        G[a].push_back(e2);
-        G[b].push_back(e);
+struct dijkstra{//priority_queueを用いる
+    vector<vector<edge>> G;
+    vector<long long> d;
+    long long INF;
+    int n;
+    dijkstra(int N){
+        G.resize(N);
+        INF = 1e14;
+        d.resize(N, INF);
+        n = N;
     }
-    int s = 0;//スタート地点は最初0
-    d[s] = 0;
-    que.push(P(0, 0));
-    while(!que.empty()){
-        P p = que.top();
-        que.pop();
-        int v = p.second;
-        if(d[v] < p.first) continue;
-        for(int i = 0; i < G[v].size(); i++){
-            edge e = G[v][i];
-            if(d[e.to] > d[v] + e.cost){
-                d[e.to] = d[v] + e.cost;
-                que.push(P(d[e.to], e.to));
+    void add(int x, int y, long long cost1){
+        edge e1 = {x, cost1}, e2 = {y, cost1};
+        G[x].push_back(e2);
+        G[y].push_back(e1);
+
+    }
+    void solve(){
+        priority_queue<P, vector<P>, greater<P>> que;
+        int s = 0;//スタート地点
+        d[s] = 0;
+        que.push(P(0, 0));
+        while(!que.empty()){
+            P p = que.top();
+            que.pop();
+            int v = p.second;
+            if(d[v] < p.first) continue;
+            for(int i = 0; i < G[v].size(); i++){
+                edge e = G[v][i];
+                if(d[e.to] > d[v] + e.cost){
+                    d[e.to] = d[v] + e.cost;
+                    que.push(P(d[e.to], e.to));
+                }
             }
         }
+        cout << d[n - 1] << endl;
     }
-    cout << d[N - 1] << endl;
-}
+};
 
 /*
 void solve(int a, int b){

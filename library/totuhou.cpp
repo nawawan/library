@@ -17,15 +17,14 @@ struct totuho{
         if(abs(a) < EPS) return 0;
         else return a;
     }
-    double dot(P a, P b){
+    double dot(P a, P b){//内積
         return juze(real(a * conj(b)));
     }
-    double det(P a, P b){
+    double det(P a, P b){//外積
         P c = P(b.imag(), b.real());
         return juze(real(a * c));
     }
     vector<P> make(vector<P> p, int n){
-        EPS = 1e-10;
         sort(p.begin(), p.end(), [&](P a, P b){
             if(!same(a.real(), b.real())) return a.real() < b.real();
             return a.imag() < b.imag(); 

@@ -5,7 +5,6 @@ struct UnionFind{
     vector<int> par;//親(根)
     vector<int> rank;//木の深さ
 
-    //UnionFind(int n) { init(n); };
     UnionFind(int n){//初期化関数
         par.resize(n);
         rank.resize(n);

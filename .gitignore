@@ -1,8 +1,10 @@
 /.DS_Store
 /.vscode
 /ABC
+/AOJ
 /AGC
 /ARC
+/codefo
 /EDPC
 /PAST
 /comp
@@ -10,4 +12,5 @@
 /heulist
 /others
 /seiproblems
+/library_checker
 /yuki

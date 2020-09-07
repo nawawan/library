@@ -2,6 +2,7 @@
 #include <vector>
 using namespace std;
 long long MAX = 1e18;
+//区間和
 struct latesegK{
     long long n;
     vector<long long> dat, lazy;
@@ -20,7 +21,7 @@ struct latesegK{
         dat[k] = a;
         while(k > 0){
             k = (k - 1) / 2;
-            dat[k] = min(dat[k * 2 + 1], dat[k * 2 + 2]);
+            dat[k] = dat[k * 2 + 1] + dat[k * 2 + 2];
         }
     }
     long long query(long long a, long long b, long long k, long long l, long long r){
