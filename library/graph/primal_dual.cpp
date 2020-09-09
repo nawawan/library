@@ -4,11 +4,11 @@ using namespace std;
 struct edge{
     int to;
     int cap;
-    int cost;
+    long long cost;
     int inv;
 };
 struct primal{
-    int INF;
+    long long INF;
     int V;
     vector<int> prevv, preve;
     vector<vector<edge>> G;
@@ -17,9 +17,9 @@ struct primal{
         prevv.resize(V);
         preve.resize(V);
         G.resize(V);
-        INF = 1e9;
+        INF = 1e18;
     }
-    void add(int s, int t, int cap, int cost){
+    void add(int s, int t, int cap, long long cost){
         edge e1 = {t, cap, cost, (int)G[t].size()};
         G[s].push_back(e1);
         edge e2 = {s, 0, -cost, (int)G[s].size() - 1};
