@@ -8,7 +8,7 @@ vector<int> zalgo(string S){
     int left = 0;
     for(int i = 1; i < n; i++){
         int l = i - left;
-        if(i + Z[l] < left + Z[left]){//すでに求めたpreffixに再利用したものが完全に収まるか判定
+        if(i + Z[l] < left + Z[left]){//すでに求めたprefixに再利用したものが完全に収まるか判定
             Z[i] = Z[l];//収まっていたらすでに求めたものを再利用できる
         }
         else{
