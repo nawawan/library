@@ -4,50 +4,59 @@ using namespace std;
 //区間和を書いてます
 struct segK{//非再帰
     int n;
-    long long MAX;
+    long long MIN;
+    int size;
     vector<long long> dat;
     segK(int n_){
         n = 1;
-        MAX = 1e18;
+        MIN = -1;
+        size = n_;
         while(n < n_) n *= 2;
         dat.resize(2 * n);
-        for(int i = 1; i < 2 * n; i++) dat[i] = MAX;
+        for(int i = 1; i < 2 * n; i++) dat[i] = MIN;
     }
     void update(int k, long long a){
         k += n;
-        dat[k] += a;
+        dat[k] = a;
         while(k > 0){
             k >>= 1;
-            dat[k] = dat[k << 1 | 0] + dat[k << 1 | 1];
+            dat[k] = max(dat[k << 1 | 0], dat[k << 1 | 1]);
         }
     }
-    long long sum(int l, int r){
+    long long query(int l, int r){
         long long res = 0;
         l += n;
         r += n;
         while(r > l){
-            if(l & 1) res += dat[l++];
-            if(r & 1) res += dat[--r];
+            if(l & 1) res = max(res, dat[l++]);
+            if(r & 1) res = max(res, dat[--r]);
             l >>= 1;
             r >>= 1;
         }
         return res;
     }
-    /*
-    int bin(int k){//セグ木上二分探索でk番目
-        int now = 1;
-        int nowsum = 0;
-        while(now * 2 < n){
-            if(nowsum + dat[now << 1 | 0] <= k) {
-                nowsum += dat[now << 1 | 0];
-                now = (now <<= 1) | 1;
+    int right_bin(int l, long long v) {
+        l += n;
+        long long zero = -1;
+        do {
+            while (l % 2 == 0) l >>= 1;
+            if (dat[l] >= v) {
+                while (l < n) {
+                    l = (2 * l);
+                    if (dat[l] < v) {
+                        zero = max(zero, dat[l]);
+                        l++;
+                    }
+                }
+                return l - n;
             }
-            else now = (now <<= 1) | 0;
-        }
-        return now;
+            zero = max(zero, dat[l]);
+            l++;
+        } while ((l & -l) != l);
+        return size;
     }
-    */
 };
+
 
 
 //再帰バージョンRMQ
