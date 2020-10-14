@@ -10,7 +10,7 @@ long long repow(long long x, long long n){//x^nのmodのmodを計算する
     return x * repow(x, n - 1) % MOD;//nが奇数のときはx^n = x * x^(n - 1)
 }
 
-long long mod_pow(long long x, long long y){
+long long repow(long long x, long long y){
     if(y == 0) return 1;
     long long res = 1;
     while(y != 0){

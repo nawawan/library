@@ -7,34 +7,34 @@ typedef pair<int, int> P;
 struct edge{
     int to;
     int cap;
-    int cost;
+    long long cost;
     int rev;
 };
 struct PDijk{
     int V;
-    int INF;
+    long long INF;
     vector<int> pote, prevv, preve;
     vector<vector<edge>> G;
     PDijk(int N){
         V = N;
-        INF = 1e9;
+        INF = 1e18;
         pote.resize(V, 0);
         G.resize(V);
         prevv.resize(V);
         preve.resize(V);
     }
-    void add(int s, int t, int cap, int cost){
+    void add(int s, int t, int cap, long long cost){
         edge e1 = {t, cap, cost, (int)G[t].size()};
         G[s].push_back(e1);
         edge e2 = {s, 0, -cost, (int)G[s].size() - 1};
         G[t].push_back(e2);
     }
     int solve(int s, int t, int f){
-        int ans = 0;
+        long long ans = 0;
         pote.assign(V, 0);
         while(f > 0){
             priority_queue<P, vector<P>, greater<P>> q;
-            vector<int> d(V, INF);
+            vector<long long> d(V, INF);
             d[s] = 0;
             q.push(P(0, s));
             while(!q.empty()){

@@ -54,14 +54,14 @@ struct Dinic{
         }
         return 0;
     }
-    int solve(int s, int t){
-        int flow = 0;
-        int INF = 1e9;
+    long long solve(int s, int t){
+        long long flow = 0;
+        long long INF = 1e18;
         while(1){
             bfs(s);
             if(level[t] < 0) return flow;
             used.assign(V, 0);
-            int f;
+            long long f;
             while((f = dfs(s, t, INF)) > 0) flow += f;
         }
     }
