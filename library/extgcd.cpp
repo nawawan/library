@@ -1,5 +1,6 @@
 #include <iostream>
 using namespace std;
+//ax + by = 1をとく(解はx, y)
 long long extgcd(long long a, long long b, long long &x, long long &y){
     int d = a;
     if(b != 0){

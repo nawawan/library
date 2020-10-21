@@ -1,20 +1,18 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
 using namespace std;
-//以下雛形を記す
-int N, M, s, t;//Vは頂点、Kは辺の数 sは始点、tは終点
-long long INF =  100000000;
+long long INF = 1e18;
 struct edge{
     int from;
     int to;
-    int cost;
+    long long cost;
 };
-
-void solve(){
-    vector<edge> es(M);
-    vector<int> d(N);//各頂点までの距離
-    for(int i = 0; i < M; i++) d[i] = INF;
+void solve(int N, int M, vector<edge> &es, int s, int t){
+    vector<long long> d(N);//各頂点までの距離
+    for(int i = 0; i < N; i++) d[i] = INF;
     d[s] = 0;
-    int k = 0;
+    long long k = 0;
+    long long ans = 0;
     while(true){
         bool flag = false;
         for(int i = 0; i < M; i++){
@@ -22,14 +20,25 @@ void solve(){
             if(d[e.from] != INF && d[e.to] > d[e.from] + e.cost){
                 d[e.to] = d[e.from] + e.cost;
                 flag = true;
-                if(e.to == t) flag == true;
             }
         }
-        if(!flag) break;
-        if(k == N && flag){//閉路があって無限に更新される場合はinf
-            cout << "inf" << endl;
-            return;
-        }
+        if(!flag || k == N) break;
+        k++;
     }
-    cout << d[t] << endl;
+    ans = min(ans, d[t]);
+    k = 0;
+    vector<bool> judge(N, false);
+    while(true){
+        for(int i = 0; i < M; i++){
+            edge e = es[i];
+            if(d[e.from] != INF && d[e.to] > d[e.from] + e.cost){
+                judge[e.to] = true;
+            }
+            if(judge[e.from]) judge[e.to] = true;
+        }
+        k++;
+        if(k == N) break;
+    }
+    if(judge[t]) cout << -1 << endl;
+    else cout << -ans << endl;
 }

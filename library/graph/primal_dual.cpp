@@ -28,7 +28,7 @@ struct primal{
     int solve(int s, int t, int f){
         int res = 0;
         while(f > 0){
-            vector<int> d(V, INF);
+            vector<long long> d(V, INF);
             bool update = true;
             d[s] = 0;
             while(update){

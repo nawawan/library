@@ -38,6 +38,7 @@ struct mod_com{//n!のmod pを返す(どちらかというとnCkのための前�
         if(n / p % 2 != 0) return res * (p - fact[n % p]) % p;
         return res * fact[n % p] % p;
     }
+    //nCk (mod p)を作成pは素数でなくてもいける
     long long COMB(long long n, long long k, long long p){
         if(n < 0 || k < 0 || n < k) return 0;
         long long e1, e2, e3;//e1 > e2 + e3ならpで割り切れる、割り切れない時はnCk = a1 * (a2 * a3)^-1(mod p)

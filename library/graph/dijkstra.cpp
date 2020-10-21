@@ -26,7 +26,7 @@ struct dijkstra{//priority_queueを用いる
         priority_queue<P, vector<P>, greater<P>> que;
         int s = 0;//スタート地点
         d[s] = 0;
-        que.push(P(0, 0));
+        que.push(P(0, s));
         while(!que.empty()){
             P p = que.top();
             que.pop();

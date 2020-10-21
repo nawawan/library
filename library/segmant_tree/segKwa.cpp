@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-//区間和を書いてます
+//RANGE MAX QUERY
 struct segK{//非再帰
     int n;
     long long MIN;
@@ -9,7 +9,7 @@ struct segK{//非再帰
     vector<long long> dat;
     segK(int n_){
         n = 1;
-        MIN = -1;
+        MIN = 0;
         size = n_;
         while(n < n_) n *= 2;
         dat.resize(2 * n);
@@ -35,31 +35,27 @@ struct segK{//非再帰
         }
         return res;
     }
-    int right_bin(int l, long long v) {
+    int right_bin(int l, long long v) {//lから右のインデックスで、初めてのv以上の値のインデックスを返す
         if(l == size) return l;
         l += n;
-        long long zero = -1;
         do {
             while (l % 2 == 0) l >>= 1;
             if (dat[l] >= v) {
                 while (l < n) {
                     l = (2 * l);
                     if (dat[l] < v) {
-                        zero = max(zero, dat[l]);
                         l++;
                     }
                 }
                 return l - n;
             }
-            zero = max(zero, dat[l]);
             l++;
         } while ((l & -l) != l);
-        return size;
+        return size - 1;
     }
-    int left_bin(int r, long long v) {
+    int left_bin(int r, long long v) {//rから左のインデックスで、初めてのv以下の値のインデックスを返す
         if(r == 0) return r;
         r += n;
-        long long zero = -1;
         do {
             r--;
             while (r > 1 && (r % 2)) r >>= 1;
@@ -67,47 +63,12 @@ struct segK{//非再帰
                 while (r < n) {
                     r = (2 * r + 1);
                     if (dat[r] > v) {
-                        zero = max(zero, dat[r]);
                         r--;
                     }
                 }
-                return r + 1 - n;
+                return r - n;
             }
-            zero = max(zero, dat[r]);
         } while ((r & -r) != r);
-        return 0;
-    }
-};
-
-
-
-//再帰バージョンRMQ
-struct segK{
-    int n;
-    vector<long long> dat;
-    long long MAX;
-    segK(int n_){
-        n = 1;
-        MAX = 1e18;
-        while(n < n_) n *= 2;
-        dat.resize(2 * n - 1);
-        for(int i = 0; i < 2 * n - 1; i++) dat[i] = MAX;
-    }
-    void update(int k, int a){
-        k += n - 1;
-        dat[k] = a;
-        while(k > 0){
-            k = (k - 1) / 2;
-            dat[k] = min(dat[k * 2 + 1], dat[k * 2 + 2]);
-        }
-    }
-    long long query(int a, int b, int k, int l, int r){
-        if(r <= a || b <= l) return MAX;
-        if(a <= l && r <= b) return dat[k];
-        else{
-            long long vl = query(a, b, k * 2 + 1, l, (l + r) / 2);
-            long long vr = query(a, b, k * 2 + 2, (l + r) / 2, r);
-            return min(vl, vr);
-        }
+        return size - 1;
     }
 };

@@ -82,9 +82,56 @@ public:
         }
         return res;
     }
+    int right_bin(int l, long long v) {
+        if(l == size) return l;
+        l += n;
+        long long zero = -1;
+        for(int i = h; i > 0; i--) push(l >> i);
+        do {
+            while (l % 2 == 0) l >>= 1;
+            if (dat[l] >= v) {
+                while (l < n) {
+                    push(l);
+                    l = (2 * l);
+                    if (dat[l] < v) {
+                        zero = max(zero, dat[l]);
+                        l++;
+                    }
+                }
+                return l - n;
+            }
+            zero = max(zero, dat[l]);
+            l++;
+        } while ((l & -l) != l);
+        return size;
+    }
+    int left_bin(int r, long long v) {
+        if(r == 0) return r;
+        r += n;
+        long long zero = -1;
+        for(int i = h; i > 0; i--) push((r - 1) >> i);
+        do {
+            r--;
+            while (r > 1 && (r % 2)) r >>= 1;
+            if (dat[r] <= v) {
+                while (r < n) {
+                    push(r);
+                    r = (2 * r + 1);
+                    if (dat[r] > v) {
+                        zero = max(zero, dat[r]);
+                        r--;
+                    }
+                }
+                return r + 1 - n;
+            }
+            zero = max(zero, dat[r]);
+        } while ((r & -r) != r);
+        return 0;
+    }
 };
 
-//再帰実装
+//再帰実装(RMQ)
+/*
 struct lazysegK{
     int n;
     vector<long long> dat, lazy;
@@ -131,3 +178,4 @@ struct lazysegK{
         }
     }
 };
+*/
