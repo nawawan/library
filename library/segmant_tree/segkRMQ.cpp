@@ -35,23 +35,20 @@ struct segK{//非再帰
         }
         return res;
     }
-    int right_bin(int l, long long v) {
+    int right_bin(int l, long long v) {//l番目の値vより小さくて、l以下で最も大きいインデックスを返す
         if(l == size) return l;
         l += n;
-        long long zero = -1;
         do {
             while (l % 2 == 0) l >>= 1;
             if (dat[l] >= v) {
                 while (l < n) {
                     l = (2 * l);
                     if (dat[l] < v) {
-                        zero = max(zero, dat[l]);
                         l++;
                     }
                 }
                 return l - n;
             }
-            zero = max(zero, dat[l]);
             l++;
         } while ((l & -l) != l);
         return size;
@@ -59,7 +56,6 @@ struct segK{//非再帰
     int left_bin(int r, long long v) {
         if(r == 0) return r;
         r += n;
-        long long zero = -1;
         do {
             r--;
             while (r > 1 && (r % 2)) r >>= 1;
@@ -67,13 +63,11 @@ struct segK{//非再帰
                 while (r < n) {
                     r = (2 * r + 1);
                     if (dat[r] > v) {
-                        zero = max(zero, dat[r]);
                         r--;
                     }
                 }
                 return r + 1 - n;
             }
-            zero = max(zero, dat[r]);
         } while ((r & -r) != r);
         return 0;
     }
@@ -109,5 +103,52 @@ struct segK{
             long long vr = query(a, b, k * 2 + 2, (l + r) / 2, r);
             return min(vl, vr);
         }
+    }
+};
+
+//区間和セグ木(転倒数を求めるためのやつもあり)
+struct segK{//非再帰
+    int n;
+    long long MIN;
+    int size;
+    vector<long long> dat;
+    segK(int n_){
+        n = 1;
+        MIN = 0;
+        size = n_;
+        while(n < n_) n *= 2;
+        dat.resize(2 * n);
+        for(int i = 1; i < 2 * n; i++) dat[i] = MIN;
+    }
+    void update(int k, long long a){
+        k += n;
+        dat[k] = a;
+        while(k > 0){
+            k >>= 1;
+            dat[k] = dat[k << 1 | 0] + dat[k << 1 | 1];
+        }
+    }
+    long long query(int l, int r){
+        long long res = 0;
+        l += n;
+        r += n;
+        while(r > l){
+            if(l & 1) res += dat[l++];
+            if(r & 1) res += dat[--r];
+            l >>= 1;
+            r >>= 1;
+        }
+        return res;
+    }
+    long long inv_bin(int r) {//vより小さくて、r以下で最も大きいインデックスを返す
+        if(r == 0) return r;
+        long long res = 0;
+        r += n;
+        do {
+            r--;
+            while (r > 1 && (r % 2)) r >>= 1;
+            res += dat[r];
+        } while ((r & -r) != r);
+        return res;
     }
 };
