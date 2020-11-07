@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> P;
+typedef pair<long long, int> P;
 struct edge{
     int to;
     long long cost;
@@ -16,7 +16,7 @@ struct dijkstra{//priority_queueを用いる
         d.resize(N, INF);
         n = N;
     }
-    void add(int x, int y, long long cost1){
+    void add(int x, int y, long long cost1){//ここ注意
         edge e1 = {x, cost1}, e2 = {y, cost1};
         G[x].push_back(e2);
         G[y].push_back(e1);
