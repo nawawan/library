@@ -61,7 +61,7 @@ void kruskal(){
     sort(G.begin(), G.end(), comp);//小さいへんから選んでいく
     UnionFind U(N);
     int ans = 0;
-    for(int i = 0; i < N; i++){
+    for(int i = 0; i < M; i++){
         edge e = G[i];
         if(!U.same(e.from, e.to)){//同じ木でない場合(閉路にならない場合)
             U.unite(e.from, e.to);
