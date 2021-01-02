@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <string>
 using namespace std;
-template<T>
+template<typename T>
 vector<T> press(vector<T> &a){
     vector<T> temp = a;
     sort(temp.begin(), temp.end());
