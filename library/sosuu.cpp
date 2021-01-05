@@ -43,7 +43,7 @@ vector<int> div(int n){//高速素因数分解用の配列(n ~ 10^6ならOK)
     }
     return d;
 }
-//こっちが正式な高速素因数分解のコード(kitamasa法)
+//こっちが正式な高速素因数分解のコード(osa_k法)
 vector<int> sieve(int n){
     vector<int> res(n, 0);
     iota(res.begin(), res.end(), 0);
