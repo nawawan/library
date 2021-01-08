@@ -4,8 +4,12 @@ using namespace std;
 struct BIT{
     vector<long long> num;
     int N;
+    int beki;
     BIT(int n){
         N = n;
+        beki = 1;
+        while(beki <= N) beki *= 2;
+        beki /= 2;
         num.resize(N + 1, 0);
     }
     long long sum(long long t){
@@ -22,6 +26,16 @@ struct BIT{
             num[ind] += t;
             ind += ind & -ind;
         }
+    }
+    long long get(long long k){//累積和がk以下のとなる最大のindexを返す
+        int ind = 0;
+        for(int i = beki; i > 0; i /= 2){
+            if(ind + i <= N && num[ind + i] <= k){
+                k -= num[ind + i];
+                ind += i;
+            }
+        }
+        return ind;
     }
 };
 
