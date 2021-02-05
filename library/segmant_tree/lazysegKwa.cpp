@@ -9,7 +9,7 @@ struct lazysegK{
     lazysegK(vector<long long> v){
         int n_ = (int) v.size();
         n = 1;
-        MAX = 1e18;
+        MAX = 0;
         while(n < n_) n *= 2;
         dat.resize(2 * n);
         lazy.resize(2 * n);
