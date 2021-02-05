@@ -35,7 +35,8 @@ struct segK{//非再帰
         }
         return res;
     }
-    int right_bin(int l, long long v) {//l番目の値vより小さくて、l以下で最も大きいインデックスを返す
+    //区間[l, r]で、値がv以下となる最小のrを返す
+    int right_bin(int l, long long v) {
         if(l == size) return l;
         l += n;
         do {
@@ -53,6 +54,7 @@ struct segK{//非再帰
         } while ((l & -l) != l);
         return size;
     }
+    //区間[l, r]で値がv以下となる最大のlを返す
     int left_bin(int r, long long v) {
         if(r == 0) return r;
         r += n;
@@ -70,6 +72,20 @@ struct segK{//非再帰
             }
         } while ((r & -r) != r);
         return 0;
+    }
+    //上から二分探索
+    int bin(long long v, int now = 1){
+        while(now < n){
+            if(dat[now << 1] >= v) now <<= 1;
+            else{
+                v -= dat[now << 1];
+                now = (now << 1) | 1;
+            }
+        }
+        return now - n;
+    }
+    long long get(int ind){
+        return dat[ind + n];
     }
 };
 
