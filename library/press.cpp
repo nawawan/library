@@ -9,7 +9,7 @@ vector<T> press(vector<T> &a){
     vector<T> temp = a;
     sort(temp.begin(), temp.end());
     temp.erase(unique(temp.begin(), temp.end()), temp.end());
-    for(int i = 0; i < N; i++){
+    for(int i = 0; i < (int)a.size(); i++){
         a[i] = lower_bound(temp.begin(), temp.end(), a[i]) - temp.begin();
     }
     return temp;
