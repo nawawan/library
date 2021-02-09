@@ -51,7 +51,10 @@ template<typename T> struct mat{
         return matrix[i];
     }
     mat& operator=(const mat& m){
-        return *m;
+        (*this).N = m.N;
+        (*this).M = m.M;
+        (*this).matrix = m.matrix;
+        return *this;
     }
     mat& operator*=(const mat &mat2){
         mat res(N, M);
