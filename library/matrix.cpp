@@ -31,30 +31,19 @@ template<typename T> struct mat{
         assert(N == M);//正方行列である必要あり
         while(K > 0){
             if(K & 1) vec = operate(vec);
-            vector<vector<T>> temp(N, vector<T>(M));
-            for(int i = 0; i < N; i++){
-                for(int j = 0; j < N; j++){
-                    for(int k = 0; k < N; k++){
-                        temp[i][j] += matrix[i][k] * matrix[k][j];
-                    }
-                }
-            }
-            matrix.swap(temp);
+            *this *= *this;
             K >>= 1;
         }
         return vec;
     }
     vector<T> operator[](const int i) const{
-        return matrix[i];
+        return matrix.at(i);
     }
     vector<T>& operator[](const int i){
-        return matrix[i];
+        return matrix.at(i);
     }
-    mat& operator=(const mat& m){
-        (*this).N = m.N;
-        (*this).M = m.M;
-        (*this).matrix = m.matrix;
-        return *this;
+    mat& operator=(mat& m){
+        return m;
     }
     mat& operator*=(const mat &mat2){
         mat res(N, M);
