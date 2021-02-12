@@ -14,6 +14,10 @@ template<const int MOD> struct modint{
     modint(const modint &t){
         val = t.val;
     }
+    modint& operator =(const modint m){
+        val = m.val;
+        return *this;
+    }
     modint operator -(){
         return modint(-val);
     }
