@@ -36,11 +36,11 @@ template<const int MOD> struct modint{
         val %= MOD;
         return *this;
     }
-    modint& operator/=(const modint &m){
-        val *= m.inv();
+    modint& operator/=(modint m){
+        *this *= m.inv();
         return *this;
     }
-    modint inv(){
+    modint& inv(){
         long long x = 1, y = 0;
         long long a = val, b = MOD;
         while(b != 0){
@@ -52,7 +52,7 @@ template<const int MOD> struct modint{
         }
         val = x % MOD;
         if(val < 0) val += MOD;
-        return modint(val);
+        return *this;
     }
     modint pow(long long k){
         long long res = 1;
@@ -80,3 +80,27 @@ template<const int MOD> struct modint{
         return modint(*this) /= m;
     }
 };
+const int MAX = 410000;
+const int MOD = 1000000007;
+using mint = modint<MOD>;
+mint fac[MAX], finv[MAX], inv[MAX];
+void COMinit(){
+    fac[0] = fac[1] = 1;
+    finv[0] = finv[1] = 1;
+    inv[1] = 1;
+    for(int i = 2; i < MAX; i++){
+        fac[i] = fac[i - 1] * i;
+        inv[i] = MOD - inv[MOD % i]* (MOD / i);
+        finv[i] = finv[i - 1] * inv[i];
+    }
+}
+mint COM(int n, int k){
+    if (n < k) return 0;
+    if (n < 0 || k < 0) return 0;
+    return fac[n] * finv[k] * finv[n - k];
+}
+mint nPm(int n, int m){
+    if(n < m) return 0;
+    if(n < 0 || m < 0) return 0;
+    return fac[n] * finv[n - m];
+}
