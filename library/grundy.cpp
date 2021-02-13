@@ -6,7 +6,7 @@ using namespace std;
 vector<int> a, x;
 int K;
 //全ての山に対してgrundy数のXORを取れば後はNimと同じ
-vector<int> grundy(){
+vector<int> grundy(vector<int> &a, vector<int> &x, int K){
     int mx = *max_element(x.begin(), x.end());
     vector<int> gr(mx + 1, 0);
     for(int i = 1; i <= mx; i++){
