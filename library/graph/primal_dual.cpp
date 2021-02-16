@@ -25,11 +25,12 @@ struct primal{
         edge e2 = {s, 0, -cost, (int)G[s].size() - 1};
         G[t].push_back(e2);
     }
-    int solve(int s, int t, int f){
-        int res = 0;
+    long long solve(int s, int t, long long f){
+        long long res = 0;
+        vector<long long> d(V);
         while(f > 0){
-            vector<long long> d(V, INF);
             bool update = true;
+            d.assign(V, INF);
             d[s] = 0;
             while(update){
                 update = false;
