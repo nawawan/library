@@ -90,7 +90,7 @@ void COMinit(){
     inv[1] = 1;
     for(int i = 2; i < MAX; i++){
         fac[i] = fac[i - 1] * i;
-        inv[i] = MOD - inv[MOD % i]* (MOD / i);
+        inv[i] = mint(MOD) - inv[MOD % i] * (MOD / i);
         finv[i] = finv[i - 1] * inv[i];
     }
 }
