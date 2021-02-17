@@ -73,6 +73,7 @@ struct RollingHash{
         assert(r >= l);
         expand(r - l);
         ull h = CalMod(POSITIVIZER + hash[r] - Mul(hash[l], power_mod[r - l]));
+        return h;
     }
     //hashがaのもののS[l1,...,r1]とbのもののS[l2,...,r2]が先頭からどれだけ一致しているかを返す
     int LCP(vector<ull>&a, int l1, int r1, vector<ull>&b, int l2, int r2){
