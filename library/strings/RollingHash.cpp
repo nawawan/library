@@ -34,7 +34,7 @@ struct RollingHash{
         return (rand() & MOD);
     }
     void expand(int sz){
-        if(power_base.size() < sz + 1){
+        if((int)power_base.size() < sz + 1){
             int pre_sz = power_base.size();
             power_base.resize(sz + 1);
             for(int i = pre_sz - 1; i < sz; i++){
