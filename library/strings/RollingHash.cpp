@@ -1,14 +1,5 @@
-#include <iostream>
-#include <vector>
-#include <string>
-#include <map>
-#include <random>
-#include <cassert>
+#include <bits/stdc++.h>
 using namespace std;
-//2^61 - 1を除数とするローリングハッシュの実装(とても安全)
-//queryはO(1)
-//makehashはO(N)
-//LCPは(log(N))
 typedef unsigned long long ull;
 struct RollingHash{
     static const ull MOD = (1UL << 61) - 1;
@@ -16,8 +7,8 @@ struct RollingHash{
     static const ull MASK31 = (1UL << 31) - 1;
     const ull base;
     static const ull POSITIVIZER = MOD * 4;
-    vector<ull> power_mod;
-    RollingHash(ull b = rand_base()) : base(b), power_mod({1}){};
+    vector<ull> power_base;
+    RollingHash(ull b = rand_base()) : base(b), power_base({1}){};
     static ull Mul(ull a, ull b){//Modを計算しない
         ull au = a >> 31;
         ull al = a & MASK31;
@@ -43,11 +34,11 @@ struct RollingHash{
         return (rand() & MOD);
     }
     void expand(int sz){
-        if(power_mod.size() < sz + 1){
-            int pre_sz = power_mod.size();
-            power_mod.resize(sz + 1);
+        if(power_base.size() < sz + 1){
+            int pre_sz = power_base.size();
+            power_base.resize(sz + 1);
             for(int i = pre_sz - 1; i < sz; i++){
-                power_mod[i + 1] = CalMod(Mul(power_mod[i], MOD));
+                power_base[i + 1] = CalMod(Mul(power_base[i], base));
             }
         }
     }
@@ -72,7 +63,7 @@ struct RollingHash{
     ull query(vector<ull> &hash, int l, int r){
         assert(r >= l);
         expand(r - l);
-        ull h = CalMod(POSITIVIZER + hash[r] - Mul(hash[l], power_mod[r - l]));
+        ull h = CalMod(POSITIVIZER + hash[r] - Mul(hash[l], power_base[r - l]));
         return h;
     }
     //hashがaのもののS[l1,...,r1]とbのもののS[l2,...,r2]が先頭からどれだけ一致しているかを返す
