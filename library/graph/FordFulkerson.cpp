@@ -1,27 +1,26 @@
 #include <iostream>
 #include <vector>
+#include <limits>
 using namespace std;
-struct edge{
-    int to;
-    int cap;
-    int rev;
-};
+template<typename T>
 struct Ford{
+    struct edge{
+        int to;
+        T cap;
+        int rev;
+    };
     vector<vector<edge>> G;
+    T INF;
     int V;
     vector<int> used;
-    Ford(int N){
-        V = N;
-        used.resize(V, 0);
-        G.resize(V);
-    }
-    void add(int u, int v, int c){
+    Ford(int N): INF(numeric_limits<T>::max()), V(N), used(N), G(N){}
+    void add(int u, int v, T c){
         edge e1 = {v, c, (int)G[v].size()};
         G[u].push_back(e1);
         edge e2 = {u, 0, (int)G[u].size() - 1};
         G[v].push_back(e2);
     }
-    int dfs(int s, int t, int f){
+    T dfs(int s, int t, T f){
         if(s == t) return f;
         used[s] = 1;
         for(edge &e: G[s]){
@@ -36,9 +35,8 @@ struct Ford{
         }
         return 0;
     }
-    int solve(int s, int t){
-        int ans = 0;
-        int INF = 1e9;
+    T solve(int s, int t){
+        T ans = 0;
         while(1){
             used.assign(V, 0);
             int res = dfs(s, t, INF);
