@@ -12,7 +12,7 @@ struct dijkstra{//priority_queueを用いる
     int n;
     dijkstra(int N){
         G.resize(N);
-        INF = 1e14;
+        INF = 2000000000000000000LL;
         d.resize(N, INF);
         n = N;
     }
