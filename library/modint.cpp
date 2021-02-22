@@ -104,3 +104,14 @@ mint nPm(int n, int m){
     if(n < 0 || m < 0) return 0;
     return fac[n] * finv[n - m];
 }
+mint repow(long long x, long long y){
+    if(y == 0) return 1;
+    mint res = 1;
+    mint x2 = x;
+    while(y > 0){
+        if(y & 1) res = res * x2;
+        x2 = x2 * x2;
+        y >>= 1;
+    }
+    return res;
+}
