@@ -1,18 +1,19 @@
 #include <iostream>
 #include <vector>
+#include <cassert>
 using namespace std;
+//1-indexed(累積和的な感じなので)
+//sumをするときは1-indexedに注意
+//queryは区間和[l, r]の
+template<typename T>
 struct BIT{
-    vector<long long> num;
+    vector<T> num;
     int N;
-    int beki;
     BIT(int n){
-        N = n;
-        beki = 1;
-        while(beki <= N) beki *= 2;
-        beki /= 2;
-        num.resize(N + 1, 0);
+        N = n + 1;
+        num.resize(N, 0);
     }
-    long long sum(long long t){
+    T sum(T t){
         long long res = 0;
         while(t > 0){
             res += num[t];
@@ -20,17 +21,23 @@ struct BIT{
         }
         return res;
     }
-    void add(int ind, long long t){
+    void add(int ind, T t){
         ind++;
-        while(ind <= N){
+        while(ind < N){
             num[ind] += t;
             ind += ind & -ind;
         }
     }
-    long long get(long long k){//累積和がk以下のとなる最大のindexを返す
+    T query(int l, int r){
+        return sum(r) - sum(l - 1);
+    }
+    int lower_bound(T k){//累積和がk以上となる最大のindexを返す
         int ind = 0;
-        for(int i = beki; i > 0; i /= 2){
-            if(ind + i <= N && num[ind + i] <= k){
+        int beki = 1;
+        assert(k >= 0);
+        while(beki < N) beki <<= 1;
+        for(int i = beki; i > 0; i >>= 1){
+            if(ind + i < N && num[ind + i] < k){
                 k -= num[ind + i];
                 ind += i;
             }
@@ -45,28 +52,43 @@ struct BIT{
 sum(N) - sum(index + 1)を足す。
 */
 
-//区間maxのBIT
+//区間加算BIT
+//add(l, r, x)で区間[l, r)にxを加算
+//sumは1-indexedに注意
+
+template<typename T>
 struct BIT{
-    vector<long long> num;
+    vector<vector<T>> num(2);
     int N;
     BIT(int n){
-        N = n;
-        num.resize(N + 1, 0);
+        N = n + 1;
+        num[0].resize(N);
+        num[1].resize(N);
     }
-    long long bit_max(long long t){
-        long long res = 0;
-        while(t > 0){
-            res = max(res, num[t]);
-            t -= t & -t;
+    void add_sub(int t, int ind, T x){
+        while(ind < N){
+            num[t][ind] += x;
+            ind += ind & (-ind);
+        }
+    }
+    void add(int l, int r, T x){
+        add_sub(0, l, -x * (l - 1));
+        add_sub(0, r, x * (r - 1));
+        add_sub(1, l, x);
+        add_sub(1, r, -x);
+    }
+    T sum_sub(int t, int ind){
+        T res = 0;
+        while(ind > 0){
+            res += num[t][ind];
+            ind -= ind & (-ind);
         }
         return res;
     }
-    void add(int ind, long long t){
-        ind++;
-        int temp = ind;
-        while(ind <= N){
-            num[ind] = max(num[ind], t);
-            ind += ind & -ind;
-        }
+    T sum(int ind){
+        return sum_sub(1, ind) * ind + sum_sub(0, ind);
+    }
+    T query(int l, int r){
+        return sum(r) - sum(l - 1);
     }
 };
