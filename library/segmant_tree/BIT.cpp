@@ -15,14 +15,16 @@ struct BIT{
     }
     T sum(T t){
         long long res = 0;
+        assert(t < N);
         while(t > 0){
-            res += num[t];
+            res += num.at(t);
             t -= t & -t;
         }
         return res;
     }
     void add(int ind, T t){
         ind++;
+        assert(ind < N);
         while(ind < N){
             num[ind] += t;
             ind += ind & -ind;
