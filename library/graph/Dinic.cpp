@@ -1,23 +1,21 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <limits>
 using namespace std;
-struct edge{
-    int to;
-    long long cap;
-    int rev;
-};
+template<typename T>
 struct Dinic{
+    struct edge{
+        int to;
+        T cap;
+        int rev;
+    };
     int V;
+    T INF;
     vector<int> level, used;
     vector<vector<edge>> G;
-    Dinic(int N){
-        V = N;
-        used.resize(V, 0);
-        level.resize(V, -1);
-        G.resize(V);
-    }
-    void add(int u, int v, long long c){
+    Dinic(int N): INF(numeric_limits<T>::max()), V(N), used(N), level(N), G(N){}
+    void add(int u, int v, T c){
         edge e1 = {v, c, (int)G[v].size()};
         G[u].push_back(e1);
         edge e2 = {u, 0, (int)G[u].size() - 1};
@@ -39,12 +37,12 @@ struct Dinic{
             }
         }
     }
-    long long dfs(int s, int t, long long f){
+    T dfs(int s, int t, T f){
         if(s == t) return f;
         for(int &i = used[s]; i < (int)G[s].size(); i++){
             edge &e = G[s][i];
             if(e.cap > 0 && level[e.to] > level[s]){
-                long long d = dfs(e.to, t, min(f, e.cap));
+                T d = dfs(e.to, t, min(f, e.cap));
                 if(d > 0){
                     e.cap -= d;
                     G[e.to][e.rev].cap += d;
@@ -54,9 +52,8 @@ struct Dinic{
         }
         return 0;
     }
-    long long solve(int s, int t){
-        long long flow = 0;
-        long long INF = 1e18;
+    T solve(int s, int t){
+        T flow = 0;
         while(1){
             bfs(s);
             if(level[t] < 0) return flow;
