@@ -31,6 +31,7 @@ struct BIT{
         }
     }
     T query(int l, int r){
+        assert(r < N && l < N);
         return sum(r) - sum(l - 1);
     }
     int lower_bound(T k){//累積和がk以上となる最大のindexを返す
