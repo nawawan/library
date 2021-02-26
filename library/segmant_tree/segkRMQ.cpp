@@ -18,7 +18,7 @@ struct segK{//非再帰
     void update(int k, long long a){
         k += n;
         dat[k] = a;
-        while(k > 0){
+        while(k > 1){
             k >>= 1;
             dat[k] = max(dat[k << 1 | 0], dat[k << 1 | 1]);
         }
@@ -36,6 +36,7 @@ struct segK{//非再帰
         return res;
     }
     //区間[l, r]で、値がv以下となる最小のrを返す
+    //RMQでしかできなさそう
     int right_bin(int l, long long v) {
         if(l == size) return l;
         l += n;
@@ -73,7 +74,7 @@ struct segK{//非再帰
         } while ((r & -r) != r);
         return 0;
     }
-    //上から二分探索
+    //上から二分探索(和の場合のみ)
     int bin(long long v, int now = 1){
         while(now < n){
             if(dat[now << 1] >= v) now <<= 1;
