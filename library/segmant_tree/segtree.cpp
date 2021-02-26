@@ -46,4 +46,82 @@ template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
         }
         return res;
     }
+    //[l, r)でf(merge(a[l],..., a[r - 1]))がtrueとなる最大のrを返す
+    template<typename F>
+    int max_right(int l, F f){
+        if(l == size) return size;
+        stack<int> s, queue<int> q;
+        int r = size;
+        while(r > l){
+            if(l & 1) q.push(l++);
+            if(r & 1) s.push(--r);
+            r >>= 1;
+            l >>= 1;
+        }
+        while(!s.empty()){
+            q.push(s.top());
+            s.pop();
+        }
+        S res = id();
+        int now = -1;
+        while(!q.empty()){
+            int v = q.top();
+            q.pop();
+            S temp = merge(res, dat[v]);
+            if(!f(temp)){
+                now = v;
+                break;
+            }
+            res = temp;
+        }
+        if(now == -1) return size;
+        while(now < size){
+            now <<= 1;
+            S temp = merge(res, dat[now]);
+            if(f(temp)){
+                res = temp;
+                now++;
+            }
+        }
+        return now - size;
+    }
+    //[l, r)でf(merge(a[l],..., a[r - 1]))がtrueとなる最小のlを返す
+    template<typename F>
+    int min_left(int r, F f){
+        if(r == 0) return 0;
+        stack<int> s, queue<int> q;
+        int l = 0;
+        while(r > l){
+            if(r & 1) q.push(--r);
+            if(l & 1) s.push(l++);
+            r >>= 1;
+            l >>= 1;
+        }
+        while(!s.empty()){
+            q.push(s.top());
+            s.pop();
+        }
+        S res = id();
+        int now = -1;
+        while(!q.empty()){
+            int v = q.top();
+            q.pop();
+            S temp = merge(res, dat[v]);
+            if(!f(temp)){
+                now = v;
+                break;
+            }
+            res = temp;
+        }
+        if(now == -1) return 0;
+        while(now < size){
+            now <<= 1;
+            S temp = merge(res, dat[now]);
+            if(f(temp)){
+                res = temp;
+                now++;
+            }
+        }
+        return now - size;
+    }
 };
