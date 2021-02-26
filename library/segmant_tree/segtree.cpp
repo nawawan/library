@@ -10,16 +10,22 @@ mergeは二つの子を指定した演算で結合
 idはidentity、単位元のこと
 */
 template<typename S, S (*merge)(S, S), S (*id)()> struct segment_tree{
+private:
     int n;
     int size;//元の配列の大きさ
     vector<S> dat;
+    void update_sub(int k){
+        dat[k] = merge(dat[k << 1 | 0], dat[k << 1 | 1]);
+    }
+public:
     segment_tree(int n_) : n(n_ * 2), size(n_), dat(n, id()){}
     segment_tree(vector<S> &v){
         size = (int)v.size();
         n = size * 2;
         dat.resize(n, id());
-        for(int i = 0; i < size; i++){
-            update(i, v[i]);
+        for(int i = 0; i < size; i++) dat[i + size] = v[i];
+        for(int i = size - 1; i >= 1; i--){
+            update_sub(i);
         }
     }
     S& operator[](const int i){
