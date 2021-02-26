@@ -5,7 +5,7 @@ struct UnionFind{
     vector<int> par;//親(根)
     vector<int> rank;//木の深さ
 
-    UnionFind(int n){//初期化関数
+    UnionFind(int n){
         par.resize(n);
         rank.resize(n);
         for(int i = 0; i < n; i++){
@@ -29,10 +29,10 @@ struct UnionFind{
         if(x == y) return;//もし同じ木に属していたら何もしない
         if(rank[x] < rank[y]) swap(x, y);//数が大きい方に小さい方を結合させる
         par[y] = x;
-        rank[x] += rank[y];//深さが同じ時だけ結合後深さが増える
+        rank[x] += rank[y];
     }
 
-    int size(int x) {//深さを返す関数
+    int size(int x) {//連結数を返す関数
         return rank[root(x)];
     }
 };

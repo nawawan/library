@@ -1,8 +1,8 @@
 #include <iostream>
 using namespace std;
-//ax + by = 1をとく(解はx, y)
+//ax + by = gcd(x, y)をとく(解はx, y)
 long long extgcd(long long a, long long b, long long &x, long long &y){
-    int d = a;
+    long long d = a;
     if(b != 0){
         d = extgcd(b, a % b, y, x);
         y -= (a / b) * x;

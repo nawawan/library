@@ -1,20 +1,19 @@
 #include <vector>
 using namespace std;
-vector<vector<int>> G;
 struct LCA{
     vector<vector<long long>> parent;
     vector<int> depth;
-    void dfs(int v, int par, int d){
+    void dfs(int v, int par, int d, vector<vector<int>>&G){
         parent[0][v] = par;
         depth[v] = d;
         for(int i: G[v]){
-            if(i != par) dfs(i, v, d + 1);
+            if(i != par) dfs(i, v, d + 1, G);
         }
     }
-    LCA(int N, int root){
+    LCA(int N, int root, vector<vector<int>> &G){
         depth.resize(N);
         parent.resize(41, vector<long long> (N));
-        dfs(root, -1, 0);
+        dfs(root, -1, 0, G);
         for(int i = 0; i < 40; i++){
             for(int j = 0; j < N; j++){
                 if(parent[i][j] == -1) parent[i + 1][j] = -1;
@@ -22,7 +21,7 @@ struct LCA{
             }
         }
     }
-    int lca(int v, int u){
+    int lca(int v, int u){//lcaを求める
         if(depth[v] < depth[u]) swap(v, u);
         for(int k = 0; k < 41; k++){
             if((depth[v] - depth[u]) >> k & 1) v = parent[k][v];
