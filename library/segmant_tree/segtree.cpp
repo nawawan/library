@@ -50,7 +50,8 @@ template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
     template<typename F>
     int max_right(int l, F f){
         if(l == size) return size;
-        stack<int> s, queue<int> q;
+        stack<int> s;
+        queue<int> q;
         int r = size;
         while(r > l){
             if(l & 1) q.push(l++);
@@ -89,7 +90,8 @@ template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
     template<typename F>
     int min_left(int r, F f){
         if(r == 0) return 0;
-        stack<int> s, queue<int> q;
+        stack<int> s;
+        queue<int> q;
         int l = 0;
         while(r > l){
             if(r & 1) q.push(--r);
