@@ -126,10 +126,11 @@ public:
         if(now == -1) return 0;
         while(now < size){
             now <<= 1;
+            now++;
             S temp = merge(res, dat[now]);
             if(f(temp)){
                 res = temp;
-                now++;
+                now--;
             }
         }
         return now - size;
