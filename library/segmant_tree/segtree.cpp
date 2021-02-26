@@ -9,7 +9,7 @@ https://hcpc-hokudai.github.io/archive/structure_segtree_001.pdf
 mergeは二つの子を指定した演算で結合
 idはidentity、単位元のこと
 */
-template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
+template<typename S, S (*merge)(S, S), S (*id)()> struct segment_tree{
     int n;
     int size;//元の配列の大きさ
     vector<S> dat;
@@ -22,11 +22,11 @@ template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
             update(i, v[i]);
         }
     }
-    segtree& operator[](const int i){
+    S& operator[](const int i){
         return dat[i + size];
     }
     void update(int ind, S a){
-        ind += n;
+        ind += size;
         dat[ind] = a;
         while(ind > 1){
             ind >>= 1;
@@ -52,7 +52,8 @@ template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
         if(l == size) return size;
         stack<int> s;
         queue<int> q;
-        int r = size;
+        l += size;
+        int r = n;
         while(r > l){
             if(l & 1) q.push(l++);
             if(r & 1) s.push(--r);
@@ -66,7 +67,7 @@ template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
         S res = id();
         int now = -1;
         while(!q.empty()){
-            int v = q.top();
+            int v = q.front();
             q.pop();
             S temp = merge(res, dat[v]);
             if(!f(temp)){
@@ -92,7 +93,8 @@ template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
         if(r == 0) return 0;
         stack<int> s;
         queue<int> q;
-        int l = 0;
+        int l = size;
+        r += size;
         while(r > l){
             if(r & 1) q.push(--r);
             if(l & 1) s.push(l++);
@@ -106,7 +108,7 @@ template<typename S, S (*merge)(S, S), S (*id)()> struct segtree{
         S res = id();
         int now = -1;
         while(!q.empty()){
-            int v = q.top();
+            int v = q.front();
             q.pop();
             S temp = merge(res, dat[v]);
             if(!f(temp)){
