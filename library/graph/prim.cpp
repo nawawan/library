@@ -8,17 +8,7 @@ struct edge{
     int cost;
 };
 
-void prim(){
-    int V, E;
-    cin >> V >> E;
-    vector<edge> G[V];
-    for(int i = 0; i < E; i++){
-        int s, t, w;
-        cin >> s >> t >> w;
-        edge e ={s, w}, e2 = {t, w};
-        G[t].push_back(e);
-        G[s].push_back(e2);
-    }
+void prim(int V, vector<vector<edge>>&G){
     priority_queue<P, vector<P>, greater<P>> q;
     vector<int> used(V, 0);
     int ans = 0;
@@ -36,7 +26,7 @@ void prim(){
     cout << ans << endl;
 }
 
-/*priority_queueを使わないダイクストラ的prim
+/*priority_queueを使わないダイクストラ的prim(これいる？)
 void prim(){
     long long V, E;
     cin >> V >> E;
