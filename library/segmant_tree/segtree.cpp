@@ -6,7 +6,7 @@ using namespace std;
 /*
 https://hcpc-hokudai.github.io/archive/structure_segtree_001.pdf
 ↑参考になりすぎ！
-mergeは二つの子を指定した演算で結合
+mergeは二つの値を指定した演算で結合(ボトムアップに更新)
 idはidentity、単位元のこと
 */
 template<typename S, S (*merge)(S, S), S (*id)()> struct segment_tree{
