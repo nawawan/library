@@ -60,7 +60,7 @@ public:
             t *= 2;
             height++;
         }
-        lazy(n, e());
+        lazy.resize(n, e());
         for(int i = 0; i < size; i++) dat[i + size] = v[i];
         for(int i = size - 1; i >= 1; i--){
             update_sub(i);
