@@ -33,14 +33,14 @@ struct scc{
             if(!used[j]) rdfs(j, k);
         }
     }
-    vector<vector<int>> solve(){//分解後の頂点数を返す
+    vector<vector<int>> solve(){//分解後の頂点を返す
         used.resize(N, false);
         for(int i = 0; i < N; i++){
             if(!used[i]) dfs(i);
         }
         used.assign(N, false);  
         int k = 0;
-        for(int i = (int)temp.size() - 1; i >= 0; i--){ //番号が大きい方から順にdfs
+        for(int i = (int)temp.size() - 1; i >= 0; i--){
             if(!used[temp[i]]) {
                 rdfs(temp[i], k);
                 k++;
