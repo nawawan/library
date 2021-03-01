@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-long long INF = 1e18;
+long long INF = 1000000000000000000;
 struct edge{
     int from;
     int to;
