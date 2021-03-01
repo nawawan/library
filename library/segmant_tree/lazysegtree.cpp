@@ -2,6 +2,8 @@
 #include <vector>
 #include <cassert>
 #include <cmath>
+#include <queue>
+#include <stack>
 using namespace std;
 //抽象化セグメントツリー
 /*
