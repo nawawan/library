@@ -101,7 +101,7 @@ public:
     //区間mergeを取得
     S query(int l, int r){
         if(l >= r) return id();
-        S res = id();
+        S resr = id(), resl = id();
         l += size;
         r += size;
         for(int i = height; i >= 1; i--){
@@ -109,12 +109,12 @@ public:
             if(((r >> i) << i) != r && (r >> i) >= 1) push(r >> i);
         }
         while(r > l){
-            if(l & 1) res = merge(res, dat[l++]);
-            if(r & 1) res = merge(dat[--r], res);
+            if(l & 1) resl = merge(res, dat[l++]);
+            if(r & 1) resr = merge(dat[--r], res);
             l >>= 1;
             r >>= 1;
         }
-        return res;
+        return merge(resl, resr);
     }
     S all_query(){
         return dat[1];
