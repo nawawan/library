@@ -42,12 +42,24 @@ private:
         if(k < size) lazy[k] = prop(x, lazy[k]);
     }
 public:
-    lazy_segment_tree(int n_) : n(n_ * 2), size(n_), dat(n, id()), lazy(n, e()), height(ceil(log(n_))){}
+    lazy_segment_tree(int n_) : n(n_ * 2), size(n_), dat(n, id()), lazy(n, e()){
+        height = 0;
+        int t = 1;
+        while(t < n_){
+            height++;
+            t *= 2;
+        }
+    }
     lazy_segment_tree(vector<S> &v){
         size = (int)v.size();
         n = size * 2;
         dat.resize(n, id());
-        height = ceil(log(size));
+        height = 0;
+        int t = 1;
+        while(t < size){
+            t *= 2;
+            height++;
+        }
         lazy(n, e());
         for(int i = 0; i < size; i++) dat[i + size] = v[i];
         for(int i = size - 1; i >= 1; i--){
