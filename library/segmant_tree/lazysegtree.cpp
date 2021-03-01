@@ -57,7 +57,7 @@ public:
     //区間更新
     void update(int l, int r, F a){
         int l1 = l + size;
-        int r1 = r1 + size;
+        int r1 = r + size;
         for(int i = height; i >= 1; i--){
             if(((l1 >> i) << i) != l1 && (l1 >> i) >= 1) push(l1 >> i);
             if(((r1 >> i) << i) != r1 && (r1 >> i) >= 1) push(r1 >> i);
@@ -108,8 +108,8 @@ public:
         return dat[1];
     }
     //[l, r)でf(merge(a[l],..., a[r - 1]))がtrueとなる最大のrを返す
-    template<typename F>
-    int max_right(int l, F f){
+    template<typename op>
+    int max_right(int l, op f){
         if(l == size) return size;
         stack<int> s;
         queue<int> q;
@@ -157,8 +157,8 @@ public:
         return now - size;
     }
     //[l, r)でf(merge(a[l],..., a[r - 1]))がtrueとなる最小のlを返す
-    template<typename F>
-    int min_left(int r, F f){
+    template<typename op>
+    int min_left(int r, op f){
         if(r == 0) return 0;
         stack<int> s;
         queue<int> q;
