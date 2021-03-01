@@ -1,14 +1,16 @@
 #include <vector>
 #include <iostream>
+#include <limits>
 using namespace std;
-struct edge{
-    int to;
-    int cap;
-    long long cost;
-    int inv;
-};
+template<typename T>
 struct primal{
-    long long INF;
+    struct edge{
+        int to;
+        int cap;
+        T cost;
+        int inv;
+    };
+    T INF;
     int V;
     vector<int> prevv, preve;
     vector<vector<edge>> G;
@@ -17,17 +19,17 @@ struct primal{
         prevv.resize(V);
         preve.resize(V);
         G.resize(V);
-        INF = 1e18;
+        INF = numeric_limits<T>::max();
     }
-    void add(int s, int t, int cap, long long cost){
+    void add(int s, int t, int cap, T cost){
         edge e1 = {t, cap, cost, (int)G[t].size()};
         G[s].push_back(e1);
         edge e2 = {s, 0, -cost, (int)G[s].size() - 1};
         G[t].push_back(e2);
     }
-    long long solve(int s, int t, long long f){
-        long long res = 0;
-        vector<long long> d(V);
+    T solve(int s, int t, T f){
+        T res = 0;
+        vector<T> d(V);
         while(f > 0){
             bool update = true;
             d.assign(V, INF);
