@@ -109,8 +109,8 @@ public:
             if(((r >> i) << i) != r && (r >> i) >= 1) push(r >> i);
         }
         while(r > l){
-            if(l & 1) resl = merge(res, dat[l++]);
-            if(r & 1) resr = merge(dat[--r], res);
+            if(l & 1) resl = merge(resl, dat[l++]);
+            if(r & 1) resr = merge(dat[--r], resr);
             l >>= 1;
             r >>= 1;
         }
