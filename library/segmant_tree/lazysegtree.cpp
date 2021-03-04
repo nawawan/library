@@ -93,11 +93,11 @@ public:
     void update(int ind, F a){
         ind += size;
         for(int i = height; i >= 1; i--){
-            if(((ind >> i) << i) != ind && (ind >> i) >= 1) push(ind >> i);
+            if((ind >> i) >= 1) push(ind >> i);
         }
         dat[ind] = affect(a, dat[ind]);
         for(int i = 1; i <= height; i++){
-            if(((ind >> i) << i) != ind && (ind >> i) >= 1) update_sub(ind >> i);
+            if((ind >> i) >= 1) update_sub(ind >> i);
         }
     }
     //区間mergeを取得
