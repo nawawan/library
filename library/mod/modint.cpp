@@ -80,9 +80,9 @@ template<const int MOD> struct modint{
         return modint(*this) /= m;
     }
 };
-const int MAX = 410000;
 const int MOD = 1000000007;
 using mint = modint<MOD>;
+const int MAX = 410000;
 mint fac[MAX], finv[MAX], inv[MAX];
 void COMinit(){
     fac[0] = fac[1] = 1;
