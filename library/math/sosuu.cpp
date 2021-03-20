@@ -1,16 +1,18 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-bool is_prime(long long n){//素数判定
-    for(long long i = 2; i * i <= n; i++){
+template<typename T>
+bool is_prime(T n){//素数判定
+    for(T i = 2; i * i <= n; i++){
         if(n % i == 0) return false;
     }
     return n != 1;
 }
 
-vector<long long> divisor(long long n){//nの約数列挙
-    vector<long long> res;
-    for(long long i = 1; i * i <= n; i++){
+template<typename T>
+vector<T> divisor(T n){//nの約数列挙
+    vector<T> res;
+    for(T i = 1; i * i <= n; i++){
         if(n % i == 0){
             res.push_back(i);
             if(i != n / i) res.push_back(n / i);
@@ -19,9 +21,10 @@ vector<long long> divisor(long long n){//nの約数列挙
     return res;
 }
 
-map<long long, long long> divide(long long n){//素因数分解
-    map<long long, long long> res;
-    for(long long i = 2; i * i <= n; i++){
+template<typename T>
+map<T, T> divide(T n){//素因数分解
+    map<T, T> res;
+    for(T i = 2; i * i <= n; i++){
         while(n % i == 0){
             res[i]++;
             n /= i;
