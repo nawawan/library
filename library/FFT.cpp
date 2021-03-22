@@ -8,39 +8,39 @@ void FFT(int N, vector<CP> &x){
     const double theta = 2 * M_PI / N;
 	const CP zeta = {cos(theta), sin(theta)};
     if(N > 1){
-		vector<CP> g, k;
-		for(int i = 0; i < N; i++){
-			if(i % 2 == 0) g.push_back(x[i]);
-			else k.push_back(x[i]);
-		}
-      	FFT(N / 2, g);
-      	FFT(N / 2, k);
-		CP p = {1, 0};
-		for(int i = 0; i < N; i++){
-			x[i] = g[i % (N / 2)] + p * k[i % (N / 2)];
-			p *= zeta;
-		}
+        vector<CP> g, k;
+        for(int i = 0; i < N; i++){
+            if(i % 2 == 0) g.push_back(x[i]);
+            else k.push_back(x[i]);
+        }
+        FFT(N / 2, g);
+        FFT(N / 2, k);
+        CP p = {1, 0};
+        for(int i = 0; i < N; i++){
+            x[i] = g[i % (N / 2)] + p * k[i % (N / 2)];
+            p *= zeta;
+        }
     }
-	return;
+    return;
 }
 void iFFT(int N, vector<CP> &x){
     const double theta = 2 * M_PI / N;
-	const CP zeta = {cos(theta), -sin(theta)};
+    const CP zeta = {cos(theta), -sin(theta)};
     if(N > 1){
-		vector<CP> g, k;
-		for(int i = 0; i < N; i++){
-			if(i % 2 == 0) g.push_back(x[i]);
-			else k.push_back(x[i]);
-		}
-      	iFFT(N / 2, g);
-      	iFFT(N / 2, k);
-		CP p = 1;
-		for(int i = 0; i < N; i++){
-			x[i] = g[i % (N / 2)] + p * k[i % (N / 2)];
-			p *= zeta;
-		}
+        vector<CP> g, k;
+        for(int i = 0; i < N; i++){
+            if(i % 2 == 0) g.push_back(x[i]);
+            else k.push_back(x[i]);
+        }
+        iFFT(N / 2, g);
+        iFFT(N / 2, k);
+        CP p = 1;
+        for(int i = 0; i < N; i++){
+            x[i] = g[i % (N / 2)] + p * k[i % (N / 2)];
+            p *= zeta;
+        }
     }
-	return;
+    return;
 }
 
 template<typename T>
