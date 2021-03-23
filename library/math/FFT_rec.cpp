@@ -23,7 +23,6 @@ void FFT(int N, vector<CP> &x, bool inverse){
     }
     return;
 }
-
 template<typename T>
 vector<CP> convolution(vector<T> a, vector<T> b){
     int sz = 1;
@@ -35,10 +34,10 @@ vector<CP> convolution(vector<T> a, vector<T> b){
     for(int i = 0; i < (int)b.size(); ++i){
         B[i] = {(double)b[i], 0};
     }
-    FFT(sz, A, false);
-    FFT(sz, B, false);
+    FFT(sz, A, true);
+    FFT(sz, B, true);
     for(int i = 0; i < sz; ++i) C[i] = A[i] * B[i];
-    iFFT(sz, C, true);
+    iFFT(sz, C, false);
     for(int i = 0; i < sz; ++i) C[i] /= sz;
     return C;
 }
