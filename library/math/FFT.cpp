@@ -20,6 +20,9 @@ void fft(int sz, vector<CP> &a, bool inverse){
         }   
     	end *= 2;
     }
+    if(inverse){
+        for(int i = 0; i < sz; i++) a[i] /= sz;
+    }
 }
 template<typename T>
 vector<long long> convolution(vector<T> &a, vector<T> &b){
@@ -46,7 +49,7 @@ vector<long long> convolution(vector<T> &a, vector<T> &b){
     fft(sz, C, true);
     vector<long long> res(sz);
     for(int i = 0; i < sz; ++i){
-        res[i] = (long long)(C[i].real() / sz + 0.01);
+        res[i] = (long long)C[i].real() + 0.01;
     }
     return res;
 }
