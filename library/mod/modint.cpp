@@ -40,7 +40,7 @@ template<const int MOD> struct modint{
         *this *= m.inv();
         return *this;
     }
-    modint& inv(){
+    modint inv(){
         long long x = 1, y = 0;
         long long a = val, b = MOD;
         while(b != 0){
@@ -50,9 +50,9 @@ template<const int MOD> struct modint{
             swap(a, b);
             swap(x, y);
         }
-        val = x % MOD;
-        if(val < 0) val += MOD;
-        return *this;
+        x %= MOD;
+        if(x < 0) x += MOD;
+        return modint(x);
     }
     modint pow(long long k){
         long long res = 1;
