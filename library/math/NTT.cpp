@@ -106,21 +106,20 @@ struct NTT{
         }
     }
     void ntt(int sz, vector<mint> &a, bool inverse){
-        int end = 2;
         int ind = 1;
-        while(end <= sz){
+        for(int end = 2; end <= sz; end *= 2){
             mint w = (inverse ? iroot[ind] : root[ind]);
+            int ofs = end / 2;
             for(int i = 0; i < sz / end; ++i){
                 mint zeta = 1;
-                for(int j = 0; j < end / 2; ++j){
-                    mint s = a[i * end + j], t = a[i * end + j + end / 2] * zeta;
+                for(int j = 0; j < ofs; ++j){
+                    mint s = a[i * end + j], t = a[i * end + j + ofs] * zeta;
                     a[i * end + j] = s + t;
-                    a[i * end + j + end / 2] = s - t;
+                    a[i * end + j + ofs] = s - t;
                     zeta *= w;
                 }
             }   
             ++ind;
-    	    end *= 2;
         }
         if(inverse){
             mint t = repow(sz, MOD - 2);
