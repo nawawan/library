@@ -93,7 +93,7 @@ struct NTT{
         int LIMIT = cnt;
         root.resize(LIMIT + 1);
         iroot.resize(LIMIT + 1);
-        root[LIMIT] = repow((long long)proot, (mod - 1) / (repow(2, cnt).val));
+        root[LIMIT] = repow((long long)proot, temp));
         iroot[LIMIT] = root[LIMIT].inv();
         for(int i = LIMIT - 1; i >= 0; --i){
             root[i] = root[i + 1] * root[i + 1];
@@ -204,7 +204,7 @@ vector<long long> arbitrary_convolution(vector<T> &a, vector<T> &b, const int mo
         long long temp = x[i];
         long long t = (y[i] - x[i]) * m12 % M[1];
         if(t < 0) t += M[1];
-        temp = (temp + M[0] * t) % mod;
+        temp = temp + M[0] * t;
         t = (z[i] - temp % M[2]) * m123 % M[2];
         if(t < 0) t += M[2];
         res[i] = (temp + m12_m * t) % mod;
