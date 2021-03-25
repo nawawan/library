@@ -78,32 +78,42 @@ template<const int MOD> struct modint{
         return modint(*this) /= m;
     }
 };
-const int MOD = 998244353;
-using mint = modint<MOD>;
-mint repow(long long x, long long y){
-    if(y == 0) return 1;
-    mint res = 1;
-    mint x2 = x;
-    while(y > 0){
-        if(y & 1) res = res * x2;
-        x2 = x2 * x2;
-        y >>= 1;
-    }
-    return res;
-}
+template<const int mod = 998244353, const int primitive_root = 3>
 struct NTT{
-    const int proot = 3;//998244353の原始根
-    const int LIMIT = 23;
+    const int proot = primitive_root;//998244353の原始根
+    int LIMIT = 23;
+    using mint = modint<mod>;
     vector<mint> root, iroot;//変換と逆変換用
     NTT(){
+        int temp = mod - 1;
+        int cnt = 0;
+        while(temp % 2 == 0){
+            temp >>= 1;
+            ++cnt;
+        }
+        LIMIT = cnt;
         root.resize(LIMIT + 1);
         iroot.resize(LIMIT + 1);
-        root[LIMIT] = repow((long long)proot, (MOD - 1) / (repow(2, 23).val));
+        root[LIMIT] = repow((long long)proot, (mod - 1) / (repow(2, cnt).val));
         iroot[LIMIT] = root[LIMIT].inv();
         for(int i = LIMIT - 1; i >= 0; --i){
             root[i] = root[i + 1] * root[i + 1];
             iroot[i] = iroot[i + 1] * iroot[i + 1];
         }
+    }
+    int get_mod(){
+        return mod;
+    }
+    mint repow(long long x, long long y){
+        if(y == 0) return 1;
+        mint res = 1;
+        mint x2 = x;
+        while(y > 0){
+            if(y & 1) res = res * x2;
+            x2 = x2 * x2;
+            y >>= 1;
+        }
+        return res;
     }
     void ntt(int sz, vector<mint> &a, bool inverse){
         int ind = 1;
@@ -122,15 +132,16 @@ struct NTT{
             ++ind;
         }
         if(inverse){
-            mint t = repow(sz, MOD - 2);
+            mint t = mint(sz).inv();
             for(int i = 0; i < sz; ++i) a[i] *= t;
         }
     }
     template<typename T>
-    vector<mint> convolution(vector<T> &a, vector<T> &b){
+    vector<long long> convolution(vector<T> &a, vector<T> &b){
         int sz = 1;
         int N = a.size(), M = b.size();
         while(sz < N + M - 1) sz *= 2;
+        assert(sz >= N + M - 1);
         vector<mint> A(sz), B(sz);
         int cnt = __builtin_popcount(sz - 1);
         //バタフライ演算用のbit反転
@@ -148,10 +159,56 @@ struct NTT{
         for(int i = 0; i < M; ++i) B[ind[i]] = b[i];
         ntt(sz, A, false);
         ntt(sz, B, false);
-        vector<mint> res(sz);
-        for(int i = 0; i < sz; ++i) res[ind[i]] = A[i] * B[i];
-        ntt(sz, res, true);
-        res.resize(N + M - 1);
+        vector<mint> C(sz);
+        for(int i = 0; i < sz; ++i) C[ind[i]] = A[i] * B[i];
+        ntt(sz, C, true);
+        C.resize(N + M - 1);
+        vector<long long> res(N + M - 1);
+        for(int i = 0; i < N + M - 1; ++i) res[i] = C[i].val;
         return res;
     }
 };
+long long extgcd(long long a, long long b, long long &x, long long &y){
+    long long d = a;
+    if(b != 0){
+        d = extgcd(b, a % b, y, x);
+        y -= (a / b) * x;
+    }
+    else{
+        x = 1;
+        y = 0;
+    }
+    return d;
+}
+long long mod_inverse(long long a, long long m){
+    long long x, y;
+    extgcd(a, m, x, y);
+    return (m + x % m) % m;
+}
+template<typename T> 
+vector<long long> arbitrary_convolution(vector<T> &a, vector<T> &b, const int mod){
+    for(auto &x: a) x %= mod;
+    for(auto &x: b) x %= mod;
+    NTT<167772161, 3> ntt1;
+    NTT<469762049, 3> ntt2;
+    NTT<1224736769, 3> ntt3;
+    vector<long long> x = ntt1.convolution(a, b);
+    vector<long long> y = ntt2.convolution(a, b);
+    vector<long long> z = ntt3.convolution(a, b);
+    //garnerで復元
+    vector<long long> res(x.size());
+    vector<long long> M = {ntt1.get_mod(), ntt2.get_mod(), ntt3.get_mod()};
+    const long long m12 = mod_inverse(M[0], M[1]);
+    const long long m123 = mod_inverse(M[0] * M[1], M[2]);
+    const long long m12_m = M[0] * M[1] % mod;
+    for(int i = 0; i < (int)x.size(); ++i){
+        long long temp = x[i];
+        long long t = (y[i] - x[i]) * m12 % M[1];
+        if(t < 0) t += M[1];
+        temp = (temp + M[0] * t) % mod;
+        t = (z[i] - temp % M[2]) * m123 % M[2];
+        if(t < 0) t += M[2];
+        res[i] = (temp + m12_m * t) % mod;
+    }
+    return res;
+}
