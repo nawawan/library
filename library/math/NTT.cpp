@@ -81,7 +81,6 @@ template<const int MOD> struct modint{
 template<const int mod = 998244353, const int primitive_root = 3>
 struct NTT{
     const int proot = primitive_root;//998244353の原始根
-    int LIMIT = 23;
     using mint = modint<mod>;
     vector<mint> root, iroot;//変換と逆変換用
     NTT(){
@@ -91,7 +90,7 @@ struct NTT{
             temp >>= 1;
             ++cnt;
         }
-        LIMIT = cnt;
+        int LIMIT = cnt;
         root.resize(LIMIT + 1);
         iroot.resize(LIMIT + 1);
         root[LIMIT] = repow((long long)proot, (mod - 1) / (repow(2, cnt).val));
