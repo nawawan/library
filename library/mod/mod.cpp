@@ -28,8 +28,7 @@ long long garner(vector<long long> &r, vector<long long> &m){
     for(int i = 0; i < (int)r.size(); i++){
         if(i == 0) x = r[i];
         else{
-            x %= m[i];
-            long long t = r[i] - x;
+            long long t = r[i] - x % m[i];
             for(int j = 0; j < i; j++){
                 t *= mod_inverse(m[j], m[i]);
                 t %= m[i];
