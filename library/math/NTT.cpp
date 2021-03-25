@@ -93,7 +93,7 @@ struct NTT{
         int LIMIT = cnt;
         root.resize(LIMIT + 1);
         iroot.resize(LIMIT + 1);
-        root[LIMIT] = repow((long long)proot, temp));
+        root[LIMIT] = repow((long long)proot, temp);
         iroot[LIMIT] = root[LIMIT].inv();
         for(int i = LIMIT - 1; i >= 0; --i){
             root[i] = root[i + 1] * root[i + 1];
