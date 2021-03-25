@@ -136,7 +136,7 @@ struct NTT{
         }
     }
     template<typename T>
-    vector<long long> convolution(vector<T> &a, vector<T> &b){
+    vector<T> convolution(vector<T> &a, vector<T> &b){
         int sz = 1;
         int N = a.size(), M = b.size();
         while(sz < N + M - 1) sz *= 2;
@@ -162,7 +162,7 @@ struct NTT{
         for(int i = 0; i < sz; ++i) C[ind[i]] = A[i] * B[i];
         ntt(sz, C, true);
         C.resize(N + M - 1);
-        vector<long long> res(N + M - 1);
+        vector<T> res(N + M - 1);
         for(int i = 0; i < N + M - 1; ++i) res[i] = C[i].val;
         return res;
     }
