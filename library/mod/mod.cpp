@@ -35,7 +35,7 @@ long long garner(vector<long long> &r, vector<long long> &m){
                 t %= m[i];
             }
             if(t < 0) t += m[i];
-            x += t;
+            x += t * m[i - 1];
             if(x >= m[i]) x -= m[i];
         }
     }
