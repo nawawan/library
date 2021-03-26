@@ -1,14 +1,14 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-struct sat2{
+struct twosat{
     int N, n;
     vector<vector<int>> G, rG;
     vector<bool> used;
     vector<int> temp;
     vector<int> order;//分解後のトポロジカル順序
-    vector<bool> judge;
-    sat2(int V){
+    vector<bool> judge;//復元用
+    twosat(int V){
         G.resize(2 * V);
         rG.resize(2 * V);
         N = 2 * V;
@@ -38,7 +38,7 @@ struct sat2{
             if(!used[j]) rdfs(j, k);
         }
     }
-    bool solve(){//分解後の頂点数を返す
+    bool build(){//分解後の頂点数を返す
         used.resize(N, false);
         for(int i = 0; i < N; i++){
             if(!used[i]) dfs(i);
@@ -54,7 +54,7 @@ struct sat2{
         for(int i = 0; i < n; i++){
             if(order[i] > order[i + n]) judge[i] = true;
             else if(order[i] < order[i + n]) judge[i] = false;
-            else return false
+            else return false;
         }
         return true;
     }
