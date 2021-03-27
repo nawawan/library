@@ -33,7 +33,7 @@ struct scc{
             if(!used[j]) rdfs(j, k);
         }
     }
-    vector<vector<int>> solve(){//分解後の頂点を返す
+    vector<vector<int>> build(){//分解後の頂点を返す
         used.resize(N, false);
         for(int i = 0; i < N; i++){
             if(!used[i]) dfs(i);
