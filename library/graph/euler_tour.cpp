@@ -24,4 +24,7 @@ struct Euler_Tour{
         }
         end[now] = ind;
     }
+    int size(){
+        return order.size();
+    }
 };
