@@ -9,8 +9,7 @@ template<typename T>
 struct BIT{
     vector<T> num;
     int N;
-    BIT(int n){
-        N = n + 1;
+    BIT(int n) : N(n + 1){
         num.resize(N, 0);
     }
     T sum(T t){
