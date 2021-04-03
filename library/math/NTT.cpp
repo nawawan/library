@@ -83,6 +83,7 @@ struct NTT{
     const int proot = primitive_root;//998244353の原始根
     using mint = modint<mod>;
     vector<mint> root, iroot;//変換と逆変換用
+    vector<int> ind;
     NTT(){
         int temp = mod - 1;
         int cnt = 0;
@@ -115,9 +116,9 @@ struct NTT{
         return res;
     }
     void ntt(int sz, vector<mint> &a, bool inverse){
-        int ind = 1;
+        int index = 1;
         for(int end = 2; end <= sz; end *= 2){
-            mint w = (inverse ? iroot[ind] : root[ind]);
+            mint w = (inverse ? iroot[index] : root[index]);
             int ofs = end / 2;
             for(int i = 0; i < sz / end; ++i){
                 mint zeta = 1;
@@ -128,11 +129,27 @@ struct NTT{
                     zeta *= w;
                 }
             }   
-            ++ind;
+            ++index;
         }
         if(inverse){
             mint t = mint(sz).inv();
             for(int i = 0; i < sz; ++i) a[i] *= t;
+        }
+    }
+    //nは必ず2のべき乗
+    void bit_inv(int n){
+        if(ind.size() == n) return;
+        ind.resize(n);
+        int cnt = __builtin_popcount(n - 1);
+        for(int i = 0; i < n; ++i){
+            ind[i] = 0;
+            int t = i;
+            int temp = 0;
+            while(t > 0){
+                if(t & 1) ind[i] |= (1 << (cnt - 1 - temp));
+                t >>= 1;
+                ++temp;
+            }
         }
     }
     template<typename T>
@@ -142,18 +159,7 @@ struct NTT{
         while(sz < N + M - 1) sz *= 2;
         assert(sz >= N + M - 1);
         vector<mint> A(sz), B(sz);
-        int cnt = __builtin_popcount(sz - 1);
-        //バタフライ演算用のbit反転
-        vector<int> ind(sz);
-        for(int i = 0; i < sz; ++i){
-            int t = i;
-            int temp = 0;
-            while(t > 0){
-                if(t & 1) ind[i] |= (1 << (cnt - 1 - temp));
-                t >>= 1;
-                ++temp;
-            }
-        }
+        bit_inv(sz);
         for(int i = 0; i < N; ++i) A[ind[i]] = a[i];
         for(int i = 0; i < M; ++i) B[ind[i]] = b[i];
         ntt(sz, A, false);
