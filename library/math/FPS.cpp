@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include <cassert>
+#include <algorithm>
+#include <complex>
 using namespace std;
 template<const int MOD> struct modint{
     long long val;
@@ -77,13 +78,19 @@ template<const int MOD> struct modint{
     modint operator/(const modint &m){
         return modint(*this) /= m;
     }
+    bool operator!=(const modint &m){
+        return modint(*this).val != m.val;
+    }
+    bool operator!=(const int &m){
+        return modint(*this).val != m;
+    }
 };
 template<const int mod = 998244353, const int primitive_root = 3>
 struct NTT{
     const int proot = primitive_root;//998244353の原始根
     using mint = modint<mod>;
     vector<mint> root, iroot;//変換と逆変換用
-    vector<int> ind;
+    vector<int> ind;//bit反転後のindex
     NTT(){
         int temp = mod - 1;
         int cnt = 0;
@@ -160,6 +167,7 @@ struct NTT{
         assert(sz >= N + M - 1);
         vector<mint> A(sz), B(sz);
         bit_inv(sz);
+        //バタフライ演算用のbit反転
         for(int i = 0; i < N; ++i) A[ind[i]] = a[i];
         for(int i = 0; i < M; ++i) B[ind[i]] = b[i];
         ntt(sz, A, false);
@@ -173,47 +181,110 @@ struct NTT{
         return res;
     }
 };
-long long extgcd(long long a, long long b, long long &x, long long &y){
-    long long d = a;
-    if(b != 0){
-        d = extgcd(b, a % b, y, x);
-        y -= (a / b) * x;
+template<typename T>
+struct FormalPowerSeries : vector<T>{
+    NTT<998244353, 3> ntt;
+    using vector<T>::vector;
+    using vector<T>::operator=;
+    using FPS = FormalPowerSeries;
+
+    FPS operator+(const FPS &r){
+        return FPS(*this) += r;
     }
-    else{
-        x = 1;
-        y = 0;
+    FPS operator-(const FPS &r){
+        return FPS(*this) -= r;
     }
-    return d;
-}
-long long mod_inverse(long long a, long long m){
-    long long x, y;
-    extgcd(a, m, x, y);
-    return (m + x % m) % m;
-}
-template<typename T> 
-vector<long long> arbitrary_convolution(vector<T> &a, vector<T> &b, const int mod){
-    for(auto &x: a) x %= mod;
-    for(auto &x: b) x %= mod;
-    NTT<167772161, 3> ntt1;
-    NTT<469762049, 3> ntt2;
-    NTT<1224736769, 3> ntt3;
-    vector<long long> x = ntt1.convolution(a, b);
-    vector<long long> y = ntt2.convolution(a, b);
-    vector<long long> z = ntt3.convolution(a, b);
-    //garnerで復元
-    vector<long long> res(x.size());
-    vector<long long> M = {ntt1.get_mod(), ntt2.get_mod(), ntt3.get_mod()};
-    const long long m12 = mod_inverse(M[0], M[1]);
-    const long long m123 = mod_inverse(M[0] * M[1], M[2]);
-    const long long m12_m = M[0] * M[1] % mod;
-    for(int i = 0; i < (int)x.size(); ++i){
-        long long temp = x[i];
-        long long t = (y[i] - x[i]) * m12 % M[1];
-        if(t < 0) t += M[1];
-        temp = temp + M[0] * t;
-        t = (z[i] - temp % M[2]) * m123 % M[2];
-        if(t < 0) t += M[2];
-        res[i] = (temp + m12_m * t) % mod;
+    FPS operator*(const FPS &r){
+        return FPS(*this) *= r;
     }
-    return res;
-}
+    FPS operator/(const FPS &r){
+        return FPS(*this) /= r;
+    }
+    FPS operator*(const T &r){
+        return FPS(*this) *= r;
+    }
+    FPS operator/(const T &r){
+        return FPS(*this) /= r;
+    }
+    FPS operator+=(const FPS &r){
+        const int n = (*this).size(), m = r.size();
+        for(int i = 0; i < min(n, m); ++i) (*this)[i] += r[i];
+    }
+    FPS operator-=(const FPS &r){
+        const int n = (*this).size(), m = r.size();
+        for(int i = 0; i < min(n, m); ++i) (*this)[i] -= r[i];
+    }
+    FPS operator*=(const FPS &r){
+        const int n = (*this).size();
+        (*this) = ntt.convolution((*this), r);//998244353の場合
+        (*this).resize(n);
+        return *this;
+    }
+    FPS operator*=(const T &r){
+        for(auto &e: (*this)) e *= r;
+    }
+    FPS operator/=(const T &r){
+        T inv = T(1) / r;
+        for(auto &e: (*this)) e *= r;
+    }
+    FPS diff(){
+        const int n = (*this).size();
+        FPS ret(max(0, n - 1));
+        for(int i = 1; i < n; ++i) ret[i - 1] = (*this)[i] * i;
+        return ret;
+    }
+    FPS integral(){
+        const int n = (*this).size();
+        FPS ret(n + 1);
+        T temp = T(1);
+        for(int i = 0; i < n; ++i) ret[i + 1]  = (*this)[i];
+        for(int i = 1; i <= n; ++i){
+            ret[i] *= temp;
+            temp *= i;
+        }
+        temp = temp.inv();
+        for(int i = n; i > 0; --i){
+            ret[i] *= temp;
+            temp *= i;
+        }
+    }
+    FPS inv(){
+        int n = 1;
+        int pri_size = (*this).size();
+        assert(n != 0 && (*this)[0] != 0);
+        while(pri_size > n) n <<= 1;
+        (*this).resize(n);
+        FPS ret = {(*this)[0].inv()};
+        ret.resize(n);
+        int sz = 1;
+        while(sz < n){
+            sz <<= 1;
+            FPS f(begin(*this), begin(*this) + sz);
+            FPS r(begin(ret), begin(ret) + sz);
+            f.resize(sz * 2);
+            r.resize(sz * 2);
+            ntt.bit_inv(sz * 2);
+            for(int i = 0; i < sz * 2; ++i){
+                if(ntt.ind[i] < i){
+                    swap(f[i], f[ntt.ind[i]]);
+                    swap(r[i], r[ntt.ind[i]]);
+                }
+            }
+            ntt.ntt(sz * 2, f, false);
+            ntt.ntt(sz * 2, r, false);
+            for(int i = 0; i < sz * 2; ++i){
+                f[i] = f[i] * r[i] * r[i]; 
+            }
+            for(int i = 0; i < sz * 2; ++i){
+                if(ntt.ind[i] < i) swap(f[i], f[ntt.ind[i]]);
+            }
+            ntt.ntt(sz * 2, f, true);
+            for(int i = 0; i < sz; ++i){
+                ret[i] = ret[i] + ret[i] - f[i];
+            }
+        }
+        (*this).resize(pri_size);
+        ret.resize(pri_size);
+        return ret;
+    }
+};

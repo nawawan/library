@@ -1,7 +1,10 @@
 #include <iostream>
 #include <vector>
 using namespace std;
-
+//今日連結成分分解を行う。
+//orderが分解後のトポロジカル順序
+//cntにそのトポロジカル順序のノードが格納されている
+//O(N + M)
 struct scc{
     int N;
     vector<vector<int>> G, rG;

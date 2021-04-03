@@ -79,6 +79,12 @@ template<const int MOD> struct modint{
     modint operator/(const modint &m){
         return modint(*this) /= m;
     }
+    bool operator!=(const modint &m){
+        return modint(*this).val != m.val;
+    }
+    bool operator!=(const int &m){
+        return modint(*this).val != m;
+    }
 };
 const int MOD = 1000000007;
 using mint = modint<MOD>;
