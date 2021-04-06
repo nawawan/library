@@ -39,8 +39,7 @@ struct kitamasa{
             else{
                 copy(ret.begin(), ret.end(), t2[0].begin());
                 for(int i = 0; i < k - 1; ++i){
-                    t2[i + 1].assign(k, 0);
-                    for(int j = 0; j < k; ++j) t2[i + 1][j] += d[j] * t2[i][k - 1];
+                    for(int j = 0; j < k; ++j) t2[i + 1][j] = d[j] * t2[i][k - 1];
                     for(int j = 0; j < k - 1; ++j) t2[i + 1][j + 1] += t2[i][j];
                 }
                 ret.assign(k, 0);
