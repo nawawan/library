@@ -23,8 +23,8 @@ public:
         size = (int)v.size();
         n = size * 2;
         dat.resize(n, id());
-        for(int i = 0; i < size; i++) dat[i + size] = v[i];
-        for(int i = size - 1; i >= 1; i--){
+        for(int i = 0; i < size; ++i) dat[i + size] = v[i];
+        for(int i = size - 1; i >= 1; --i){
             update_sub(i);
         }
     }
@@ -41,16 +41,16 @@ public:
     }
     S query(int l, int r){
         if(l >= r) return id();
-        S res = id();
+        S vl = id(), vr = id();
         l += size;
         r += size;
         while(r > l){
-            if(l & 1) res = merge(res, dat[l++]);
-            if(r & 1) res = merge(dat[--r], res);
+            if(l & 1) vl = merge(vl, dat[l++]);
+            if(r & 1) vr = merge(dat[--r], vr);
             l >>= 1;
             r >>= 1;
         }
-        return res;
+        return merge(vl, vr);
     }
     //[l, r)でf(merge(a[l],..., a[r - 1]))がtrueとなる最大のrを返す
     template<typename F>
@@ -88,7 +88,7 @@ public:
             S temp = merge(res, dat[now]);
             if(f(temp)){
                 res = temp;
-                now++;
+                ++now;
             }
         }
         return now - size;
@@ -126,11 +126,11 @@ public:
         if(now == -1) return 0;
         while(now < size){
             now <<= 1;
-            now++;
+            ++now;
             S temp = merge(res, dat[now]);
             if(f(temp)){
                 res = temp;
-                now--;
+                --now;
             }
         }
         return now - size;
