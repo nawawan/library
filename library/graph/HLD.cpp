@@ -44,15 +44,15 @@ struct HLD{
         vector<pair<int, int>> ret;
         while(highest[u] != highest[v]){
             if(depth[highest[u]] <= depth[highest[v]]){
-                ret.push_back({nexidx[highest[u]], nexidx[u]});
+                ret.push_back({nexidx[highest[v]], nexidx[v]});
                 v = par[highest[v]];
             }
             else{
-                ret.push_back({nexidx[highest[v]], nexidx[v]});
+                ret.push_back({nexidx[highest[u]], nexidx[u]});
                 u = par[highest[u]];
             }
         }
-        ret.push_back({min(nexidx[v], nexidx[u]), max(nexidx[v], nexidx[v])});
+        ret.push_back({min(nexidx[v], nexidx[u]), max(nexidx[v], nexidx[u])});
         return ret;
     }
 private:
