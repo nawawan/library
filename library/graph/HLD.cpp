@@ -31,15 +31,11 @@ struct HLD{
     //O(log(N))
     int lca(int u, int v){
         while(highest[u] != highest[v]){
-            if(depth[highest[u]] <= depth[highest[v]]){
-                v = par[highest[v]];
-            }
-            else{
-                u = par[highest[u]];
-            }
+            if(depth[highest[u]] > depth[highest[v]]) swap(u, v);
+            v = par[highest[v]];
         }
-        if(depth[v] <= depth[u]) return v;
-        else return u;
+        if(nexidx[u] > nexidx[v]) swap(u, v);
+        return u;
     }
     //パスが被覆する連結成分の始点と終点を返す(O(log(N)))
     //LCAを求めていく感じ
