@@ -18,7 +18,7 @@ private:
         dat[k] = merge(dat[k << 1 | 0], dat[k << 1 | 1]);
     }
 public:
-    segment_tree(int n_) : n(n_ * 2), size(n_), dat(n, id()){}
+    segment_tree(int n_) : n(n_ * 2), size(n_), dat(n_ * 2, id()){}
     segment_tree(vector<S> &v){
         size = (int)v.size();
         n = size * 2;
