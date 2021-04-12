@@ -133,6 +133,6 @@ public:
                 --now;
             }
         }
-        return now - size;
+        return now + 1 - size;
     }
 };
