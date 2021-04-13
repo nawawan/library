@@ -7,6 +7,11 @@ struct edge{
     int to;
     long long cost;
 };
+/*
+N : ノード数, M : 辺の数, es : 辺の情報
+s : 始点, t : 終点
+O(NM)
+*/
 void solve(int N, int M, vector<edge> &es, int s, int t){
     vector<long long> d(N);//各頂点までの距離
     for(int i = 0; i < N; i++) d[i] = INF;
