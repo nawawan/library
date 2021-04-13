@@ -10,7 +10,10 @@ struct HLD{
     vector<int> hld, depth, sz, pre, nex, par, nexidx, highest;
     vector<vector<int>> G;
     int N;
-    HLD(int n) : N(n), depth(n), sz(n), pre(n), nex(n, -1), par(n), nexidx(n), highest(n), G(n){}
+    HLD(int n) : N(n), depth(n), sz(n), pre(n), par(n), highest(n), G(n){
+        nex.resize(n, -1);
+        nexidx.resize(n, -1);
+    }
     HLD(vector<vector<int>> &G) : N(G.size()), G(G){
         depth.resize(N);
         sz.resize(N);
@@ -54,6 +57,18 @@ struct HLD{
         }
         ret.push_back({min(nexidx[v], nexidx[u]), max(nexidx[v], nexidx[u])});
         return ret;
+    }
+    //元のindex -> HLD上のindex
+    int next_id(int x){
+        return nexidx[x];
+    }
+    //HLD上のindex -> 元のindex
+    int pre_id(int x){
+        return pre[x];
+    }
+    //頂点の深さを返す
+    int dep(int x){
+        return depth[x];
     }
 private:
     int dfs_calsz(int now, int parent = -1){
