@@ -19,7 +19,7 @@ private:
     }
 public:
     segment_tree(int n_) : n(n_ * 2), size(n_){
-        dat.resize(n, id())
+        dat.resize(n, id());
     }
     segment_tree(vector<S> &v){
         size = (int)v.size();
