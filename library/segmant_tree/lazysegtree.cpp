@@ -44,7 +44,9 @@ private:
         if(k < size) lazy[k] = prop(x, lazy[k]);
     }
 public:
-    lazy_segment_tree(int n_) : n(n_ * 2), size(n_), dat(n, id()), lazy(n, e()){
+    lazy_segment_tree(int n_) : n(n_ * 2), size(n_){
+        dat.resize(n, id());
+        lazy.resize(n, e())
         height = 0;
         int t = 1;
         while(t < n_){

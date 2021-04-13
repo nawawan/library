@@ -1,30 +1,34 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <limits>
 using namespace std;
-typedef pair<long long, int> P;
 struct edge{
     int to;
-    long long cost;
+    int cost;
 };
+template<typename T>
 struct dijkstra{//priority_queueを用いる
+    typedef pair<T, int> P;
     vector<vector<edge>> G;
-    vector<long long> d;
-    long long INF;
+    vector<T> d;
+    T INF = numeric_limits<T>::max();
     int n;
     dijkstra(int N){
         G.resize(N);
-        INF = 2000000000000000000LL;
         d.resize(N, INF);
         n = N;
     }
-    void add(int x, int y, long long cost1){//ここ注意
+    dijkstra(vector<vector<edge>>&g) : G(g), n(g.size()){
+        d.resize(n, INF);
+    }
+    void add(int x, int y, T cost1){//ここ注意
         edge e1 = {x, cost1}, e2 = {y, cost1};
         G[x].push_back(e2);
         G[y].push_back(e1);
-
     }
-    void solve(){
+    void solve(int s){
         priority_queue<P, vector<P>, greater<P>> que;
-        int s = 0;//スタート地点
         d[s] = 0;
         que.push(P(0, s));
         while(!que.empty()){
@@ -40,7 +44,6 @@ struct dijkstra{//priority_queueを用いる
                 }
             }
         }
-        cout << d[n - 1] << endl;
     }
 };
 
