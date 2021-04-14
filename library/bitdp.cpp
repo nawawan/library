@@ -6,6 +6,7 @@ vector<vector<long long>> dp;
 int N;
 vector<vector<long long>> cost;
 //dp配列は初期値が-1
+//TSPのbitDP
 long long dfs(int bit, int now, vector<vector<long long>> &dp, vector<vector<long long>>&cost, int N){
     if(dp[bit][now] >= 0) return dp[bit][now];
     if(bit == (1 << N) - 1 && now == 0) return dp[bit][now] = 0;
