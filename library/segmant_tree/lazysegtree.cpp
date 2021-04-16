@@ -22,7 +22,7 @@ eはYの単位元
 更新、取得する部分の部分木の根を全部探索
 更新の場合は更新後ボトムアップに親を更新
 */
-template<typename S, S (*merge)(S, S), S (*id)(), typename F, F (*prop)(F, F), S (*affect)(F, S), F (*e)()> struct lazy_segment_tree{
+template<typename S, S (*XX)(S, S), S (*id)(), typename F, F (*FF)(F, F), S (*FX)(F, S), F (*e)()> struct lazy_segment_tree{
 private:
     int n;
     int size;//元の配列の大きさ
@@ -30,7 +30,7 @@ private:
     vector<S> dat;
     vector<F> lazy;
     void update_sub(int k){
-        dat[k] = merge(dat[k << 1 | 0], dat[k << 1 | 1]);
+        dat[k] = XX(dat[k << 1 | 0], dat[k << 1 | 1]);
     }
     //伝搬用の関数
     void push(int k){
@@ -40,8 +40,8 @@ private:
     }
     //伝搬してきた遅延を作用させ、遅延部分を増幅(というより結合)させる
     void operate(int k, F x){
-        dat[k] = affect(x, dat[k]);
-        if(k < size) lazy[k] = prop(x, lazy[k]);
+        dat[k] = FX(x, dat[k]);
+        if(k < size) lazy[k] = FF(x, lazy[k]);
     }
 public:
     lazy_segment_tree(int n_) : n(n_ * 2), size(n_){
@@ -113,12 +113,12 @@ public:
             if(((r >> i) << i) != r && (r >> i) >= 1) push(r >> i);
         }
         while(r > l){
-            if(l & 1) resl = merge(resl, dat[l++]);
-            if(r & 1) resr = merge(dat[--r], resr);
+            if(l & 1) resl = XX(resl, dat[l++]);
+            if(r & 1) resr = XX(dat[--r], resr);
             l >>= 1;
             r >>= 1;
         }
-        return merge(resl, resr);
+        return XX(resl, resr);
     }
     S all_query(){
         return dat[1];
@@ -153,7 +153,7 @@ public:
         while(!q.empty()){
             int v = q.front();
             q.pop();
-            S temp = merge(res, dat[v]);
+            S temp = XX(res, dat[v]);
             if(!f(temp)){
                 now = v;
                 break;
@@ -164,7 +164,7 @@ public:
         while(now < size){
             push(now);
             now <<= 1;
-            S temp = merge(res, dat[now]);
+            S temp = XX(res, dat[now]);
             if(f(temp)){
                 res = temp;
                 now++;
@@ -198,7 +198,7 @@ public:
         while(!q.empty()){
             int v = q.front();
             q.pop();
-            S temp = merge(res, dat[v]);
+            S temp = XX(res, dat[v]);
             if(!f(temp)){
                 now = v;
                 break;
@@ -210,7 +210,7 @@ public:
             push(now);
             now <<= 1;
             now++;
-            S temp = merge(res, dat[now]);
+            S temp = XX(res, dat[now]);
             if(f(temp)){
                 res = temp;
                 now--;
