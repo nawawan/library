@@ -46,7 +46,7 @@ private:
 public:
     lazy_segment_tree(int n_) : n(n_ * 2), size(n_){
         dat.resize(n, id());
-        lazy.resize(n, e())
+        lazy.resize(n, e());
         height = 0;
         int t = 1;
         while(t < n_){
@@ -97,7 +97,7 @@ public:
         for(int i = height; i >= 1; i--){
             if((ind >> i) >= 1) push(ind >> i);
         }
-        dat[ind] = affect(a, dat[ind]);
+        dat[ind] = FX(a, dat[ind]);
         for(int i = 1; i <= height; i++){
             if((ind >> i) >= 1) update_sub(ind >> i);
         }
