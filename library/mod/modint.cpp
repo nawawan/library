@@ -90,6 +90,7 @@ const int MOD = 1000000007;
 using mint = modint<MOD>;
 const int MAX = 410000;
 mint fac[MAX], finv[MAX], inv[MAX];
+//MAX < MOD
 void COMinit(){
     fac[0] = fac[1] = 1;
     finv[0] = finv[1] = 1;
