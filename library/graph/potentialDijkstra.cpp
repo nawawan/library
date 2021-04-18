@@ -2,6 +2,7 @@
 #include <vector>
 #include <queue>
 #include <utility>
+#include <limits>
 using namespace std;
 typedef pair<int, int> P;
 struct edge{
@@ -10,31 +11,26 @@ struct edge{
     long long cost;
     int rev;
 };
+template<typename T>
 struct PDijk{
     int V;
-    long long INF;
+    T INF;
     vector<int> pote, prevv, preve;
     vector<vector<edge>> G;
-    PDijk(int N){
-        V = N;
-        INF = 1e18;
-        pote.resize(V, 0);
-        G.resize(V);
-        prevv.resize(V);
-        preve.resize(V);
-    }
-    void add(int s, int t, int cap, long long cost){
+    PDijk(int N): V(N), INF(numeric_limits<T>::max()), pote(V), G(V), prevv(V), preve(V){}
+    PDijs(vector<vector<int>>&g) : G(g), V(g.size()), INF(numeric_limits<T>::max()), prevv(G.size()), preve(G.size()){}
+    void add(int s, int t, int cap, T cost){
         edge e1 = {t, cap, cost, (int)G[t].size()};
         G[s].push_back(e1);
         edge e2 = {s, 0, -cost, (int)G[s].size() - 1};
         G[t].push_back(e2);
     }
-    int solve(int s, int t, int f){
-        long long ans = 0;
+    T solve(int s, int t, T f){
+        T ans = 0;
         pote.assign(V, 0);
         while(f > 0){
             priority_queue<P, vector<P>, greater<P>> q;
-            vector<long long> d(V, INF);
+            vector<T> d(V, INF);
             d[s] = 0;
             q.push(P(0, s));
             while(!q.empty()){
