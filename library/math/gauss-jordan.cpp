@@ -4,6 +4,7 @@ using namespace std;
 const double EPS = 1e-8;
 typedef vector<double> vec;
 typedef vector<vec> mat;
+//O(N^3)
 vec gauss_jordan(const mat & A, const vec &b){
     int n = A.size();//n個の連立方程式をとく。
     mat B(n, vec(n + 1));

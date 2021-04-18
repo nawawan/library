@@ -9,22 +9,24 @@ https://hcpc-hokudai.github.io/archive/structure_segtree_001.pdf
 mergeは二つの値を指定した演算で結合(ボトムアップに更新)
 idはidentity、単位元のこと
 */
-template<typename S, S (*merge)(S, S), S (*id)()> struct segment_tree{
+template<typename S, S (*XX)(S, S), S (*id)()> struct segment_tree{
 private:
     int n;
     int size;//元の配列の大きさ
     vector<S> dat;
     void update_sub(int k){
-        dat[k] = merge(dat[k << 1 | 0], dat[k << 1 | 1]);
+        dat[k] = XX(dat[k << 1 | 0], dat[k << 1 | 1]);
     }
 public:
-    segment_tree(int n_) : n(n_ * 2), size(n_), dat(n, id()){}
+    segment_tree(int n_) : n(n_ * 2), size(n_){
+        dat.resize(n, id());
+    }
     segment_tree(vector<S> &v){
         size = (int)v.size();
         n = size * 2;
         dat.resize(n, id());
-        for(int i = 0; i < size; i++) dat[i + size] = v[i];
-        for(int i = size - 1; i >= 1; i--){
+        for(int i = 0; i < size; ++i) dat[i + size] = v[i];
+        for(int i = size - 1; i >= 1; --i){
             update_sub(i);
         }
     }
@@ -36,21 +38,21 @@ public:
         dat[ind] = a;
         while(ind > 1){
             ind >>= 1;
-            dat[ind] = merge(dat[ind << 1 | 0], dat[ind << 1 | 1]);
+            dat[ind] = XX(dat[ind << 1 | 0], dat[ind << 1 | 1]);
         }
     }
     S query(int l, int r){
         if(l >= r) return id();
-        S res = id();
+        S vl = id(), vr = id();
         l += size;
         r += size;
         while(r > l){
-            if(l & 1) res = merge(res, dat[l++]);
-            if(r & 1) res = merge(dat[--r], res);
+            if(l & 1) vl = XX(vl, dat[l++]);
+            if(r & 1) vr = XX(dat[--r], vr);
             l >>= 1;
             r >>= 1;
         }
-        return res;
+        return XX(vl, vr);
     }
     //[l, r)でf(merge(a[l],..., a[r - 1]))がtrueとなる最大のrを返す
     template<typename F>
@@ -75,7 +77,7 @@ public:
         while(!q.empty()){
             int v = q.front();
             q.pop();
-            S temp = merge(res, dat[v]);
+            S temp = XX(res, dat[v]);
             if(!f(temp)){
                 now = v;
                 break;
@@ -85,10 +87,10 @@ public:
         if(now == -1) return size;
         while(now < size){
             now <<= 1;
-            S temp = merge(res, dat[now]);
+            S temp = XX(res, dat[now]);
             if(f(temp)){
                 res = temp;
-                now++;
+                ++now;
             }
         }
         return now - size;
@@ -116,7 +118,7 @@ public:
         while(!q.empty()){
             int v = q.front();
             q.pop();
-            S temp = merge(res, dat[v]);
+            S temp = XX(res, dat[v]);
             if(!f(temp)){
                 now = v;
                 break;
@@ -126,13 +128,13 @@ public:
         if(now == -1) return 0;
         while(now < size){
             now <<= 1;
-            now++;
-            S temp = merge(res, dat[now]);
+            ++now;
+            S temp = XX(res, dat[now]);
             if(f(temp)){
                 res = temp;
-                now--;
+                --now;
             }
         }
-        return now - size;
+        return now + 1 - size;
     }
 };
