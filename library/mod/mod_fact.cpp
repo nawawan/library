@@ -20,13 +20,15 @@ long long mod_inverse(long long a, long long m){
     extgcd(a, m, x, y);
     return (m + x % m) % m;
 }
-struct mod_com{//n!のmod pを返す(どちらかというとnCkのための前処理)
+struct mod_com{
     vector<long long> fact;
+    int mod;
     mod_com(long long p){//k < pに対してk!mod pのテーブルを作成
         fact.resize(MAX);//nに合わせてMAXを変更すれば良い
+        mod = p;
         for(int i = 0; i < MAX; i++){
             if(i == 0) fact[i] = 1;
-            else fact[i] = fact[i - 1] * i % p;
+            else fact[i] = fact[i - 1] * i % mod;
         }
     }
     long long modf(int n, long long p, long long &e){//n! = a * p^eの時のa mod pを返す
@@ -39,11 +41,12 @@ struct mod_com{//n!のmod pを返す(どちらかというとnCkのための前�
         return res * fact[n % p] % p;
     }
     //nCk (mod p)を作成pは素数でなくてもいける
-    long long COMB(long long n, long long k, long long p){
+    //O(log n)
+    long long COMB(long long n, long long k){
         if(n < 0 || k < 0 || n < k) return 0;
         long long e1, e2, e3;//e1 > e2 + e3ならpで割り切れる、割り切れない時はnCk = a1 * (a2 * a3)^-1(mod p)
-        long long a1 = modf(n, p, e1), a2 = modf(k, p, e2), a3 = modf(n - k, p, e3);
+        long long a1 = modf(n, mod, e1), a2 = modf(k, mod, e2), a3 = modf(n - k, mod, e3);
         if(e1 > e2 + e3) return 0;
-        return a1 * mod_inverse(a2 * a3 % p, p) % p;
+        return a1 * mod_inverse(a2 * a3 % mod, mod) % mod;
     }
 };
