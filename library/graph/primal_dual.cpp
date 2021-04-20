@@ -14,13 +14,7 @@ struct primal{
     int V;
     vector<int> prevv, preve;
     vector<vector<edge>> G;
-    primal(int N){
-        V = N;
-        prevv.resize(V);
-        preve.resize(V);
-        G.resize(V);
-        INF = numeric_limits<T>::max();
-    }
+    primal(int N): V(N), prevv(N), preve(N), G(N), INF(numeric_limits<T>::max()){}
     void add(int s, int t, int cap, T cost){
         edge e1 = {t, cap, cost, (int)G[t].size()};
         G[s].push_back(e1);
