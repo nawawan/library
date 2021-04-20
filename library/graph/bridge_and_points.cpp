@@ -15,6 +15,7 @@ struct lowlinks{
         sort(points.begin(), points.end());
         sort(bridge.begin(), bridge.end());
     }
+private:
     void dfs(int now, int num, int par, vector<vector<int>>&G){
         order[now] = low[now] = num;
         ++num;

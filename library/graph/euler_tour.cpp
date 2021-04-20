@@ -3,11 +3,9 @@ using namespace std;
 struct Euler_Tour{
     vector<int> order;
     vector<int> begin, end;
-    Euler_Tour(vector<vector<int>> &G){
+    Euler_Tour(vector<vector<int>> &G): begin(G.size()), end(G.size()){
         int root = 0;
         int sz = G.size();
-        begin.resize(sz);
-        end.resize(sz);
         int ind = 0;
         dfs(root, ind, -1, G);
     }
