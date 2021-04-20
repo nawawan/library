@@ -3,14 +3,21 @@ using namespace std;
 struct Euler_Tour{
     vector<int> order;
     vector<int> begin, end;
-    Euler_Tour(vector<vector<int>> &G){
-        int root = 0;
-        int sz = G.size();
-        begin.resize(sz);
-        end.resize(sz);
+    vector<vector<int>> G;
+    Euler_Tour(vector<vector<int>> &g): begin(g.size()), end(g.size()), G(g){}
+    Euler_Tour(int N) : begin(N), end(N), G(N) {}
+    void add_edge(int u, int v){
+        G[u].push_back(v);
+        G[v].push_back(u);
+    }
+    void build(int root = 0){
         int ind = 0;
         dfs(root, ind, -1, G);
     }
+    int size(){
+        return order.size();
+    }
+private:
     void dfs(int now, int &ind, int par, vector<vector<int>>&G){
         order.push_back(now);
         begin[now] = ind;
@@ -23,8 +30,5 @@ struct Euler_Tour{
             }
         }
         end[now] = ind;
-    }
-    int size(){
-        return order.size();
     }
 };

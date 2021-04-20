@@ -20,6 +20,16 @@ struct Ford{
         edge e2 = {u, 0, (int)G[u].size() - 1};
         G[v].push_back(e2);
     }
+    T solve(int s, int t){
+        T ans = 0;
+        while(1){
+            used.assign(V, 0);
+            int res = dfs(s, t, INF);
+            if(res == 0) return ans;
+            ans += res;
+        }
+    }
+private:
     T dfs(int s, int t, T f){
         if(s == t) return f;
         used[s] = 1;
@@ -34,14 +44,5 @@ struct Ford{
             }
         }
         return 0;
-    }
-    T solve(int s, int t){
-        T ans = 0;
-        while(1){
-            used.assign(V, 0);
-            int res = dfs(s, t, INF);
-            if(res == 0) return ans;
-            ans += res;
-        }
     }
 };

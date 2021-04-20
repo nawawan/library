@@ -21,6 +21,17 @@ struct Dinic{
         edge e2 = {u, 0, (int)G[u].size() - 1};
         G[v].push_back(e2);
     }
+    T solve(int s, int t){
+        T flow = 0;
+        while(1){
+            bfs(s);
+            if(level[t] < 0) return flow;
+            used.assign(V, 0);
+            long long f;
+            while((f = dfs(s, t, INF)) > 0) flow += f;
+        }
+    }
+private:
     void bfs(int s){
         level.assign(V, -1);
         queue<int> q;
@@ -51,16 +62,6 @@ struct Dinic{
             }
         }
         return 0;
-    }
-    T solve(int s, int t){
-        T flow = 0;
-        while(1){
-            bfs(s);
-            if(level[t] < 0) return flow;
-            used.assign(V, 0);
-            long long f;
-            while((f = dfs(s, t, INF)) > 0) flow += f;
-        }
     }
 };
 
