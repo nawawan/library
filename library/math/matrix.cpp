@@ -4,12 +4,11 @@
 #include <algorithm>
 #include <cassert>
 using namespace std;
-//少なくとも行列累乗はクソ遅いので、使わないほうがいいよ
 template<typename T> struct mat{
     vector<vector<T>> matrix;//行列
     int N, M;
     //const int MOD//必要なら
-    mat() : N(0), M(0), matrix(0){}
+    mat(){}
     mat(int n, int m): N(n), M(m){
         matrix.resize(n, vector<T>(m));
     }
@@ -22,32 +21,33 @@ template<typename T> struct mat{
         }
         return res;
     }
-    vector<T> repow(long long K, vector<T> &vec){//行列累乗(MODなし)
+    mat I(int N){
+        mat m(N, N);
+        for(int i = 0; i < N; i++) m[i][i] = 1;
+        return (m);
+    }
+    mat& pow(long long K){//行列累乗(MODなし)
         assert(N == M);//正方行列である必要あり
+        mat temp(I(N));
         while(K > 0){
-            if(K & 1) vec = operate(vec);
-            mat temp(*this);
-            temp = (*this) * (*this);
-            matrix.swap(temp.matrix);
+            if(K & 1) temp *= *this;
+            *this *= *this;
             K >>= 1;
         }
-        return vec;
-    }
-    vector<T> operator[](const int i) const{
-        return matrix.at(i);
-    }
-    vector<T>& operator[](const int i){
-        return matrix.at(i);
-    }
-    mat& operator=(mat m){
-        matrix.swap(m.matrix);
+        matrix.swap(temp.matrix);
         return *this;
+    }
+    const vector<T> &operator[](int i) const{
+        return matrix.at(i);
+    }
+    vector<T>& operator[](int i){
+        return matrix.at(i);
     }
     mat& operator*=(const mat &mat2){
         vector<vector<T>> res(N, vector<T>(M));
         for(int i = 0; i < N; i++){
             for(int j = 0; j < N; j++){
-                for(int k = 0; k < N; k++){
+                for(int k = 0; k < M; k++){
                     res[i][j] += (*this)[i][k] * mat2[k][j];
                 }
             }
