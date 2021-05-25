@@ -2,37 +2,37 @@
 using namespace std;
 
 struct UnionFind{
-    vector<int> par;//親(根)
-    vector<int> rank;//木の深さ
+    vector<int> par;
+    vector<int> rank;
 
     UnionFind(int n){
         par.resize(n);
         rank.resize(n);
         for(int i = 0; i < n; i++){
-            par[i] = i;//初めはノード一個の木なので根は自身
+            par[i] = i;
             rank[i] = 1;
         }
     }
 
-    int root(int x){//木の根を求める
+    int root(int x){
     if(par[x] == x) return x;
     else return par[x] = root(par[x]);
     }
 
-    bool same(int x, int y){//同じ木かどうか判定
-        return root(x) == root(y);//同じ木ならtrue
+    bool same(int x, int y){
+        return root(x) == root(y);
     }
 
     void unite(int x, int y){
         x = root(x);
         y = root(y);
-        if(x == y) return;//もし同じ木に属していたら何もしない
-        if(rank[x] < rank[y]) swap(x, y);//数が大きい方に小さい方を結合させる
+        if(x == y) return;
+        if(rank[x] < rank[y]) swap(x, y);
         par[y] = x;
         rank[x] += rank[y];
     }
 
-    int size(int x) {//連結数を返す関数
+    int size(int x) {
         return rank[root(x)];
     }
 };
