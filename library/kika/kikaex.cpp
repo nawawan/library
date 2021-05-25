@@ -16,13 +16,13 @@ struct PL{
     PL operator - (PL p){
         return PL(add(x, -p.x), add(y, -p.y));
     }
-    PL operator * (long double d){
+    PL operator * (long double &d){
         return PL(x * d, y * d);
     }
-    long double dot(PL p){
+    long double dot(PL &p){
         return add(x * p.x, y * p.y);
     }
-    long double det(PL p){
+    long double det(PL &p){
         return add(x * p.y, -y * p.x);
     }
     long double norm(){

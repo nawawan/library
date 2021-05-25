@@ -5,6 +5,7 @@ struct LCA{
     vector<int> depth;
     vector<vector<int>> G;
     int N;
+    LCA(){}
     LCA(vector<vector<int>> &g) : N(g.size()), depth(g.size()), G(g){
         parent.resize(41, vector<int>(N));
     }
@@ -30,13 +31,13 @@ struct LCA{
             if((depth[v] - depth[u]) >> k & 1) v = parent[k][v];
         }
         if(v == u) return u;
-        int ub = 40, lb = -1;
-        while(ub - lb > 1){
-            int mid = (ub + lb) / 2;
-            if(parent[mid][u] != parent[mid][v]) lb = mid;
-            else ub = mid;
+        for(int k = 40; k >= 0; k--){
+            if(parent[k][u] != parent[k][v]){
+                u = parent[k][u];
+                v = parent[k][v];
+            }
         }
-        return parent[ub][u];
+        return parent[0][u];
     }
 private:
     void dfs(int v, int par, int d, vector<vector<int>>&G){
