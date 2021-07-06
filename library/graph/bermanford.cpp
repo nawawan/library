@@ -12,12 +12,10 @@ N : ノード数, M : 辺の数, es : 辺の情報
 s : 始点, t : 終点
 O(NM)
 */
-void solve(int N, int M, vector<edge> &es, int s, int t){
-    vector<long long> d(N);//各頂点までの距離
-    for(int i = 0; i < N; i++) d[i] = INF;
-    d[s] = 0;
+vector<long long> solve(int N, int M, vector<edge> &es, int s){
     long long k = 0;
-    long long ans = 0;
+    vector<long long> d(N, INF);
+    d[s] = 0;
     while(true){
         bool flag = false;
         for(int i = 0; i < M; i++){
@@ -30,7 +28,6 @@ void solve(int N, int M, vector<edge> &es, int s, int t){
         if(!flag || k == N) break;
         k++;
     }
-    ans = min(ans, d[t]);
     k = 0;
     vector<bool> judge(N, false);
     while(true){
@@ -44,6 +41,8 @@ void solve(int N, int M, vector<edge> &es, int s, int t){
         k++;
         if(k == N) break;
     }
-    if(judge[t]) cout << -1 << endl;
-    else cout << -ans << endl;
+    /*
+    if(judge[t]) return vector<long long> (); //ゴールが分かっている時用
+    */
+   return d;
 }
