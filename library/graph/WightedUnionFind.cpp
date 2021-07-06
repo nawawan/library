@@ -1,4 +1,5 @@
 #include <vector>
+using namespace std;
 template<typename T>
 struct UnionFind{
     vector<int> par;
@@ -47,7 +48,7 @@ struct UnionFind{
         return dweight[x];
     }
     T diff(int x, int y){
-        return weight(y) - weight[x];
+        return weight(y) - weight(x);
     }
     int size(int x) {
         return rank[root(x)];
