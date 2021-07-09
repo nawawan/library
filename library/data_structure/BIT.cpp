@@ -60,12 +60,13 @@ sum(N) - sum(index + 1)を足す。
 
 template<typename T>
 struct BIT{
-    vector<vector<T>> num(2);
+    vector<vector<T>> num;
     int N;
     BIT(int n){
+        num.resize(2);
         N = n + 1;
-        num[0].resize(N);
-        num[1].resize(N);
+        num[0].resize(N + 1);
+        num[1].resize(N + 1);
     }
     void add_sub(int t, int ind, T x){
         while(ind < N){
