@@ -28,9 +28,9 @@ struct UnionFind{
         return root(x) == root(y);
     }
 
-    void unite(int x, int y, T w){
+    bool unite(int x, int y, T w){
         w += weight(x);
-        w -= weight(y):
+        w -= weight(y);
         x = root(x);
         y = root(y);
         if(x == y) return false;
