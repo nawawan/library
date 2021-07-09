@@ -12,7 +12,7 @@ N : ノード数, M : 辺の数, es : 辺の情報
 s : 始点, t : 終点
 O(NM)
 */
-vector<long long> solve(int N, int M, vector<edge> &es, int s){
+vector<long long> BF(int N, int M, vector<edge> &es, int s){
     long long k = 0;
     vector<long long> d(N, INF);
     d[s] = 0;
