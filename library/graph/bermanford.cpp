@@ -35,6 +35,8 @@ vector<long long> BF(int N, int M, vector<edge> &es, int s){
             edge e = es[i];
             if(d[e.from] != INF && d[e.to] > d[e.from] + e.cost){
                 judge[e.to] = true;
+                //単に負閉路を検出したい場合はここで
+                //return vector<long long> ();
             }
             if(judge[e.from]) judge[e.to] = true;
         }
