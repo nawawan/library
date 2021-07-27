@@ -62,7 +62,7 @@ template<const int MOD> struct modint{
         }
         return modint(res);
     }
-    modint operator==(const modint &m){
+    bool operator==(const modint &m){
         return val == m.val;
     }
     modint operator+(const modint &m){
@@ -76,6 +76,12 @@ template<const int MOD> struct modint{
     }
     modint operator/(const modint &m){
         return modint(*this) /= m;
+    }
+    bool operator!=(const modint &m){
+        return modint(*this).val != m.val;
+    }
+    bool operator!=(const int &m){
+        return modint(*this).val != m;
     }
 };
 template<const int mod = 998244353, const int primitive_root = 3>
