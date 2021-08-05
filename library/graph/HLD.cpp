@@ -7,9 +7,6 @@ using namespace std;
 //nexidxは変換後の番号、nexは最も重い子ノード番号
 //highestはその連結成分における最も浅いノード
 struct HLD{
-    vector<int> hld, depth, sz, pre, nex, par, nexidx, highest;
-    vector<vector<int>> G;
-    int N;
     HLD(int n) : N(n), depth(n), sz(n), pre(n), par(n), highest(n), G(n){
         nex.resize(n, -1);
         nexidx.resize(n, -1);
@@ -71,6 +68,9 @@ struct HLD{
         return depth[x];
     }
 private:
+    vector<int> hld, depth, sz, pre, nex, par, nexidx, highest;
+    vector<vector<int>> G;
+    int N;
     int dfs_calsz(int now, int parent = -1){
         sz[now] = 1;
         par[now] = parent;
