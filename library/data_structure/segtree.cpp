@@ -137,22 +137,4 @@ public:
         }
         return now + 1 - size;
     }
-    //上から二分探索する用(現コードはMexを求めるようのやつ)
-    int lower_bound(int f){
-        int now = 0;
-        while(now < size){
-            if(now == 0) now += size;
-            while((now & 1) == 0) now >>= 1;
-            if(dat[now] < f){
-                while(now < size){
-                    int l = now << 1;
-                    int r = (now << 1) | 1;
-                    if(dat[l] < f) now = l;
-                    else now = r;
-                }
-            }
-            else ++now;
-        }
-        return now - size;
-    }
 };
