@@ -60,11 +60,11 @@ vector<int> sieve(int n){
     return res;
 }
 //sieveで求まった配列を用いて素因数分解0(logn)
-vector<int> factor(int n, vector<int> &min_fac){
+vector<int> factor(int n, vector<int> &f){
     vector<int> t;
     while(n > 1){
-        t.push_back(min_fac[n]);
-        n /= min_fac[n];
+        t.push_back(f[n]);
+        n /= f[n];
     }
     return t;
 }

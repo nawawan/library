@@ -5,6 +5,9 @@ const double EPS = 1e-8;
 typedef vector<double> vec;
 typedef vector<vec> mat;
 //O(N^3)
+//ax + by + cz ... = A
+//a2x + b2y + c2z ... = B...を解く
+//A -> 係数行列, b -> 右辺の係数ベクトル
 vec gauss_jordan(const mat & A, const vec &b){
     int n = A.size();//n個の連立方程式をとく。
     mat B(n, vec(n + 1));

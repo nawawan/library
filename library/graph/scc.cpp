@@ -5,11 +5,11 @@ using namespace std;
 //orderが分解後のトポロジカル順序
 //cntにそのトポロジカル順序のノードが格納されている
 //O(N + M)
-struct SCC{
+struct Strongly_Connected_Composition{
     int N;
     vector<int> order;//分解後のトポロジカル順序(サイズ = 分解後のノード数)
     vector<vector<int>> cnt;
-    SCC(int V){
+    Strongly_Connected_Composition(int V){
         G.resize(V);
         rG.resize(V);
         N = V;
