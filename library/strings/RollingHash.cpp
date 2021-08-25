@@ -59,7 +59,7 @@ struct RollingHash{
         }
         return hash;
     }
-    //文字列(または配列)のS[l,...,r)部分のハッシュ値を返す(r > l)(1-index)
+    //文字列(または配列)のS[l,...,r)部分のハッシュ値を返す(r > l)
     ull query(vector<ull> &hash, int l, int r){
         assert(r > l);
         expand(r - l);
