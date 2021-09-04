@@ -62,9 +62,8 @@ struct Trie{
         int now = 0;
         int sum = 0;
         int cnt = 0;
-        while(true){
+        while(sum < k){
             cnt++;
-            if(sum == k) break;
             int nxt = -1;
             for(int i = 0; i < char_size; i++){
                 int nxt = Nodes[now].nex[i];
