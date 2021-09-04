@@ -64,7 +64,7 @@ template<const int MOD> struct modint{
         }
         return modint(res);
     }
-    modint operator==(const modint &m){
+    bool operator==(const modint &m){
         return val == m.val;
     }
     modint operator+(const modint &m){

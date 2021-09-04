@@ -9,6 +9,7 @@ struct Dinic{
         int to;
         T cap;
         int rev;
+        edge(int t, int c, int r) : to(t), cap(c), rev(r) {}
     };
     int V;
     T INF;
@@ -16,10 +17,8 @@ struct Dinic{
     vector<vector<edge>> G;
     Dinic(int N): INF(numeric_limits<T>::max()), V(N), used(N), level(N), G(N){}
     void add(int u, int v, T c){
-        edge e1 = {v, c, (int)G[v].size()};
-        G[u].push_back(e1);
-        edge e2 = {u, 0, (int)G[u].size() - 1};
-        G[v].push_back(e2);
+        G[u].emplace_back(v, c, (int)G[v].size());
+        G[v].emplace_back(u, 0, (int)G[u].size() - 1);
     }
     T solve(int s, int t){
         T flow = 0;

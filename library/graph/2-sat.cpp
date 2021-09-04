@@ -38,7 +38,7 @@ struct twosat{
             if(!used[j]) rdfs(j, k);
         }
     }
-    bool build(){//分解後の頂点数を返す
+    bool build(){
         used.resize(N, false);
         for(int i = 0; i < N; i++){
             if(!used[i]) dfs(i);

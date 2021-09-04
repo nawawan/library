@@ -1,0 +1,12 @@
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+#include<ext/pb_ds/tag_and_trait.hpp>
+using namespace __gnu_pbds;
+をして
+typedef tree<type,null_type,less<type>,rb_tree_tag,tree_order_statistics_node_update> btree;
+のtypeを順序がついたものに変更しよう
+setみたいな感じの関数 + 
+find_by_order(K)でK番目のiterator
+order_of_key(key)でkey以上の要素がtree中で何番目かを返す(lower_bound)
+
+https://hogloid.hatenablog.com/entry/2014/09/23/132440

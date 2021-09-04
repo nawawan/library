@@ -8,6 +8,7 @@ struct Ford{
         int to;
         T cap;
         int rev;
+        edge(int t, int c, int r) : to(t), cap(c), rev(r) {}
     };
     vector<vector<edge>> G;
     T INF;
@@ -15,10 +16,9 @@ struct Ford{
     vector<int> used;
     Ford(int N): INF(numeric_limits<T>::max()), V(N), used(N), G(N){}
     void add(int u, int v, T c){
-        edge e1 = {v, c, (int)G[v].size()};
-        G[u].push_back(e1);
+        G[u].emplace_back(v, c, (int)G[v].size());
         edge e2 = {u, 0, (int)G[u].size() - 1};
-        G[v].push_back(e2);
+        G[v].emplace_back(u, 0, (int)G[u].size() - 1);
     }
     T solve(int s, int t){
         T ans = 0;

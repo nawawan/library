@@ -12,13 +12,12 @@ struct edge{
     int rev;
 };
 template<typename T>
-struct PDijk{
+struct Primal_Dual{
     int V;
     T INF;
     vector<int> pote, prevv, preve;
     vector<vector<edge>> G;
-    PDijk(int N): V(N), INF(numeric_limits<T>::max()), pote(V), G(V), prevv(V), preve(V){}
-    PDijs(vector<vector<int>>&g) : G(g), V(g.size()), INF(numeric_limits<T>::max()), prevv(G.size()), preve(G.size()){}
+    Primal_Dual(int N): V(N), INF(numeric_limits<T>::max()), pote(V), G(V), prevv(V), preve(V){}
     void add(int s, int t, int cap, T cost){
         edge e1 = {t, cap, cost, (int)G[t].size()};
         G[s].push_back(e1);

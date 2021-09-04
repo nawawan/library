@@ -10,7 +10,10 @@ struct Node{
 };
 struct kdtree{
     vector<int> x, y;
+    //点群のx座標とy座標をコンストラクタに渡す
     kdtree(vector<int>&X, vector<int>&Y) : x(X), y(Y) {}
+    //平衡二分探索木を作成してその根のポインタを返す
+    //O(Nlog(N)^2)
     Node* build(vector<int>&ind, int l, int r, int depth){
         if(l >= r) return nullptr;
         int mid = (l + r) / 2;
@@ -26,6 +29,7 @@ struct kdtree{
         }
         return new Node(ind[mid], build(ind, l, mid, depth + 1), build(ind, mid + 1, r, depth + 1));
     }
+    //二次元平面のlx <= x < rx && ly <= y < ryにある点のindexがretに格納される
     void search(int &lx, int &rx, int &ly, int &ry, int d, Node *node, vector<int>&ret){
         int id = node->num;
         if(lx <= x[id] && x[id] <= rx && ly <= y[id] && y[id] <= ry) ret.push_back(id);

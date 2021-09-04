@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 using namespace std;
+//
+//Z[i] = 文字列Sについて[0, ..., n)と[i, ... n)がどれだけ一致しているか
 vector<int> zalgo(string S){
     int n = S.size();
     vector<int> Z(n, 0);

@@ -7,15 +7,15 @@ typedef complex<double> CP;
 void fft(int sz, vector<CP> &a, bool inverse){
     int end = 2;
     while(end <= sz){
-    double theta = 2 * M_PI / end;
-    CP w = {cos(theta), sin(theta) * (inverse ? -1 : 1)};
-    for(int i = 0; i < sz / end; i++){
-        CP temp = {1, 0};
-        for(int j = 0; j < end / 2; j++){
-            CP s = a[i * end + j], t = a[i * end + j + end / 2] * temp;
-            a[i * end + j] = s + t;
-            a[i * end + j + end / 2] = s - t;
-            temp *= w;
+        double theta = 2 * M_PI / end;
+        CP w = {cos(theta), sin(theta) * (inverse ? -1 : 1)};
+        for(int i = 0; i < sz / end; i++){
+            CP temp = {1, 0};
+            for(int j = 0; j < end / 2; j++){
+                CP s = a[i * end + j], t = a[i * end + j + end / 2] * temp;
+                a[i * end + j] = s + t;
+                a[i * end + j + end / 2] = s - t;
+                temp *= w;
             }
         }   
     	end *= 2;

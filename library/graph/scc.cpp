@@ -5,14 +5,11 @@ using namespace std;
 //orderが分解後のトポロジカル順序
 //cntにそのトポロジカル順序のノードが格納されている
 //O(N + M)
-struct scc{
+struct Strongly_Connected_Composition{
     int N;
-    vector<vector<int>> G, rG;
-    vector<bool> used;
-    vector<int> temp;
-    vector<int> order;//分解後のトポロジカル順序
+    vector<int> order;//分解後のトポロジカル順序(サイズ = 分解後のノード数)
     vector<vector<int>> cnt;
-    scc(int V){
+    Strongly_Connected_Composition(int V){
         G.resize(V);
         rG.resize(V);
         N = V;
@@ -21,20 +18,6 @@ struct scc{
     void add(int s, int t){
         G[s].push_back(t);
         rG[t].push_back(s);
-    }
-    void dfs(int s){
-        used[s] = true;
-        for(int j: G[s]){
-            if(!used[j]) dfs(j);
-        }
-        temp.push_back(s);
-    }
-    void rdfs(int s, int k){
-        used[s] = true;
-        order[s] = k;
-        for(int j: rG[s]){
-            if(!used[j]) rdfs(j, k);
-        }
     }
     vector<vector<int>> build(){//分解後の頂点を返す
         used.resize(N, false);
@@ -54,5 +37,23 @@ struct scc{
             cnt[order[i]].push_back(i);
         }
         return cnt;
+    }
+private:
+    vector<vector<int>> G, rG;
+    vector<bool> used;
+    vector<int> temp;
+    void dfs(int s){
+        used[s] = true;
+        for(int j: G[s]){
+            if(!used[j]) dfs(j);
+        }
+        temp.push_back(s);
+    }
+    void rdfs(int s, int k){
+        used[s] = true;
+        order[s] = k;
+        for(int j: rG[s]){
+            if(!used[j]) rdfs(j, k);
+        }
     }
 };

@@ -12,6 +12,10 @@ struct BIT{
     BIT(int n) : N(n + 1){
         num.resize(N, 0);
     }
+    /*
+    区間 [l, r)(0-indexed)のsumを知りたいとき
+    sum(r) - sum(l);
+    */
     T sum(T t){
         long long res = 0;
         assert(t < N);
@@ -33,7 +37,7 @@ struct BIT{
         assert(r < N && l < N);
         return sum(r) - sum(l - 1);
     }
-    int lower_bound(T k){//累積和がk以上となる最大のindexを返す
+    int lower_bound(T k){//累積和がk以上となる最小のindexを返す
         int ind = 0;
         int beki = 1;
         assert(k >= 0);

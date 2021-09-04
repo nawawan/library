@@ -2,9 +2,9 @@
 using namespace std;
 typedef unsigned long long ull;
 struct RollingHash{
-    static const ull MOD = (1UL << 61) - 1;
-    static const ull MASK30 = (1UL << 30) - 1;
-    static const ull MASK31 = (1UL << 31) - 1;
+    static const ull MOD = (1ULL << 61) - 1;
+    static const ull MASK30 = (1ULL << 30) - 1;
+    static const ull MASK31 = (1ULL << 31) - 1;
     const ull base;
     static const ull POSITIVIZER = MOD * 4;
     vector<ull> power_base;
@@ -59,14 +59,14 @@ struct RollingHash{
         }
         return hash;
     }
-    //文字列(または配列)のS[l,...,r]部分のハッシュ値を返す(r > l)(1-index)
+    //文字列(または配列)のS[l,...,r)部分のハッシュ値を返す(r > l)
     ull query(vector<ull> &hash, int l, int r){
         assert(r > l);
         expand(r - l);
         ull h = CalMod(POSITIVIZER + hash[r] - Mul(hash[l], power_base[r - l]));
         return h;
     }
-    //hashがaのもののS[l1,...,r1]とbのもののS[l2,...,r2]が先頭からどれだけ一致しているかを返す
+    //hashがaのもののS[l1,...,r1]とbのもののS[l2,...,r2)が先頭からどれだけ一致しているかを返す(一致している文字数)
     int LCP(vector<ull>&a, int l1, int r1, vector<ull>&b, int l2, int r2){
         int len = min(r1 - l1, r2 - l2);
         int lb = 0, ub = len + 1;
