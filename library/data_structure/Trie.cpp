@@ -4,18 +4,16 @@ using namespace std;
 //nex : 次の文字へのパスがなければ-1この頂点番号(後述のNodesのindex)
 //accept : そこが終端の文字列のindex
 //count : その文字を共有する文字列の個数
-template<const int char_size>
-struct Trie_Node{
-    vector<int> nex, accept;
-    int count;
-    Trie_Node() : count(0){
-        nex.resize(char_size, -1);
-    }
-};
 template<int char_size, int offset>
 struct Trie{
     private:
-    using Node = Trie_Node<char_size>;
+struct Node{
+    vector<int> nex, accept;
+    int count;
+    Node() : count(0){
+        nex.resize(char_size, -1);
+    }
+};
     vector<Node> Nodes;
     int root;
     //文字列の挿入O(|word|)
