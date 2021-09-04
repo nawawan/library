@@ -14,16 +14,10 @@ struct Trie_Node{
 };
 template<int char_size, int offset>
 struct Trie{
+    private:
     using Node = Trie_Node<char_size>;
     vector<Node> Nodes;
     int root;
-    Trie() : root(0){
-        Nodes.push_back(Node());
-    }
-    void add(int Node_id, int char_id){
-        Nodes[Node_id].nex[char_id] = (int)Nodes.size();
-        Nodes.push_back(Node());
-    }
     //文字列の挿入O(|word|)
     void insert(const string &word, const int str_index){
         int now = root;
@@ -37,6 +31,14 @@ struct Trie{
         }
         ++Nodes[now].count;
         Nodes[now].accept.push_back(str_index);
+    }
+    void add(int Node_id, int char_id){
+        Nodes[Node_id].nex[char_id] = (int)Nodes.size();
+        Nodes.push_back(Node());
+    }
+    public:
+    Trie() : root(0){
+        Nodes.push_back(Node());
     }
     void insert(const string &word){
         insert(word, Nodes[0].count);
