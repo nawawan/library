@@ -88,6 +88,7 @@ struct Binary_Trie{
     int count_less(T num, T xor_val = 0){
         return count_less(root, num, xor_val);
     }
+    //実装サボってます
     int lower_bound(T num, T xor_val = 0){
         if(count(num, xor_val)) return num;
         int cnt = count_less(num, xor_val);
