@@ -49,7 +49,7 @@ struct Binary_Trie{
         insert(root, num, -1, MAX_LOG - 1, xor_val);
     }
     Node* find(T num, T xor_val = 0){
-        find(root, num, MAX_LOG - 1, xor_val);
+        return find(root, num, MAX_LOG - 1, xor_val);
     }
     T count(T num, T xor_val = 0){
         Node* res = find(num, xor_val);
