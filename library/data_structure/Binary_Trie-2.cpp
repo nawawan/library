@@ -14,7 +14,7 @@ struct Binary_Trie{
     Node* find(Node *t, T num, T xor_val = 0){
         for(int i = MAX_LOG - 1; i >= 0; i--){
             bool f = xor_val & ((T)1 << i);
-            f ^= num & ((T)1 << i);
+            f ^= (bool)(num & ((T)1 << i));
             if(!t->nex[f]) return nullptr;
             t = t->nex[f];
         }
@@ -24,7 +24,7 @@ struct Binary_Trie{
         for(int i = MAX_LOG - 1; i >= 0; i--){
             t->count += d;
             bool f = xor_val & ((T)1 << i);
-            f ^= (num & ((T)1 << i));
+            f ^= (bool)(num & ((T)1 << i));
             if(!t->nex[f]) t->nex[f] = new Node();
             t = t->nex[f];
         }
@@ -42,6 +42,17 @@ struct Binary_Trie{
             else{
                 t = t->nex[f];
             }
+        }
+        return res;
+    }
+    int count_less(Node* t, T num, T xor_val = 0){
+        int res = 0;
+        for(int i = MAX_LOG - 1; i >= 0; i--){
+            bool f = xor_val & ((T)1 << i);
+            if((num & ((T)1 << i)) && t->nex[f]) res += t->nex[f]->count;
+            f ^= (bool)(num & ((T)1 << i));
+            if(t->nex[f]) t = t->nex[f];
+            else return res;
         }
         return res;
     }
@@ -73,5 +84,19 @@ struct Binary_Trie{
     T max_element(T xor_val = 0){
         assert(root->count >= 1);
         return kth_element(root->count, xor_val);
+    }
+    int count_less(T num, T xor_val = 0){
+        return count_less(root, num, xor_val);
+    }
+    int lower_bound(T num, T xor_val = 0){
+        if(count(num, xor_val)) return num;
+        int cnt = count_less(num, xor_val);
+        assert(root->count >= cnt + 1);
+        return kth_element(cnt + 1, xor_val);
+    }
+    int upper_bound(T num, T xor_val = 0){
+        int cnt = count_less(num, xor_val) + count(num, xor_val);
+        assert(root->count >= cnt + 1);
+        return kth_element(cnt + 1, xor_val);
     }
 };
