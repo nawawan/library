@@ -6,7 +6,7 @@ struct Binary_Trie{
     private:
     struct Node{
         Node *nex[2];
-        T count;
+        int count;
         Node() : nex{nullptr, nullptr}, count(0){}
     };
     Node *root;
