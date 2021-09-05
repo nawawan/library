@@ -12,7 +12,7 @@ struct Binary_Trie{
     Node *root;
     //存在しなければnullを返す
     Node* find(Node *t, T num, int now_bit, T xor_val = 0){
-        if(now_bit == -1) return t;
+        if(now_bit == -1) return (t->count > 0 ? t : nullptr);
         bool f = xor_val & ((T)1 << now_bit);
         f ^= num & ((T)1 << now_bit);
         if(!t->nex[f]) return nullptr;

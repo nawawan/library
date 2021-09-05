@@ -18,7 +18,7 @@ struct Binary_Trie{
             if(!t->nex[f]) return nullptr;
             t = t->nex[f];
         }
-        return t;
+        return (t->count > 0 ? t : nullptr);
     }
     void insert(Node *t, T num, int d, T xor_val = 0){
         for(int i = MAX_LOG - 1; i >= 0; i--){
