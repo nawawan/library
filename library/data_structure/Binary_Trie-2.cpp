@@ -58,11 +58,11 @@ struct Binary_Trie{
     }
     public:
     Binary_Trie() : root(new Node()){}
-    void add(T num, T xor_val = 0){
-        insert(root, num, 1, xor_val);
+    void add(T num, int d = 1, T xor_val = 0){
+        insert(root, num, d, xor_val);
     }
-    void erase(T num, T xor_val = 0){
-        insert(root, num, -1, xor_val);
+    void erase(T num, int d = -1, T xor_val = 0){
+        insert(root, num, d, xor_val);
     }
     Node* find(T num, T xor_val = 0){
         return find(root, num, xor_val);
@@ -99,5 +99,8 @@ struct Binary_Trie{
         int cnt = count_less(num, xor_val) + count(num, xor_val);
         assert(root->count >= cnt + 1);
         return kth_element(cnt + 1, xor_val);
+    }
+    int size(){
+        return root->count;
     }
 };
