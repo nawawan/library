@@ -1,5 +1,8 @@
 #include <vector>
 #include <cassert>
+#include <cmath>
+#include <algorithm>
+#include <numeric>
 using namespace std;
 //addとeraseを適宜変更(クエリが返す答えも適宜作る)
 struct Mo{
