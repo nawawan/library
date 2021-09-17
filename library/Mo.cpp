@@ -1,5 +1,8 @@
 #include <vector>
 #include <cassert>
+#include <cmath>
+#include <algorithm>
+#include <numeric>
 using namespace std;
 //addとeraseを適宜変更(クエリが返す答えも適宜作る)
 struct Mo{
@@ -21,7 +24,7 @@ struct Mo{
         iota(ind.begin(), ind.end(), 0);
         sort(ind.begin(), ind.end(), [&](int x, int y){
             if(lef[x] / width != lef[y] / width) return lef[x] < lef[y];
-            return bool((rig[x] < rig[y]) ^ (lef[x] / width % 2));
+            return (lef[x] / width % 2) ? (rig[x] > rig[y]) : (rig[x] < rig[y]);
         });
     }
     //開区間[lef[id], rig[id])に注意
@@ -31,20 +34,16 @@ struct Mo{
         if(now == (int)ind.size()) return -1;
         int id = ind[now];
         while(nl > lef[id]) --nl, add(nl);
+        while(nr < rig[id]) add(nr), ++nr;
         while(nl < lef[id]) erase(nl), ++nl;
         while(nr > rig[id]) --nr, erase(nr);
-        while(nr < rig[id]) add(nr), ++nr;
         ++now;
         return id;
     }
     //区間に入る時
-    void add(){
-
-    }
+    void add(int d);
     //区間から外れる時
-    void erase(){
-
-    }
+    void erase(int d);
     //現在見てるクエリについて答えを返す
     //voidを適宜変更
     void query(){
