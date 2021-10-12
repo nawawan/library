@@ -7,7 +7,6 @@ using namespace std;
 template<typename T> struct mat{
     vector<vector<T>> matrix;//行列
     int N, M;
-    //const int MOD//必要なら
     mat(){}
     mat(int n, int m): N(n), M(m){
         matrix.resize(n, vector<T>(m));
@@ -26,7 +25,7 @@ template<typename T> struct mat{
         for(int i = 0; i < N; i++) m[i][i] = 1;
         return (m);
     }
-    mat& pow(long long K){//行列累乗(MODなし)
+    mat& pow(long long K){
         assert(N == M);//正方行列である必要あり
         mat temp(I(N));
         while(K > 0){
