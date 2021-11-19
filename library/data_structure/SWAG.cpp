@@ -11,13 +11,15 @@ struct swag{
     }
     Monoid query(int x, int y){
         while(r < y){
-            push(r);
-            ++r;
+            push(r++);
         }
         while(l < x){
             pop();
-            l++;
+            ++l;
         }
+        return XX(front_val.top(), B);
+    }
+    Monoid query(){
         return XX(front_val.top(), B);
     }
     void push(int x){
