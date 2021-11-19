@@ -42,6 +42,7 @@ struct Node{
         insert(word, Nodes[0].count);
     }
     //単語検索O(|word|)
+    //その単語の個数を返す
     int exist(const string &word, bool p = false){
         int now = 0;
         for(int i = 0; i < (int)word.size(); i++){
@@ -52,10 +53,11 @@ struct Node{
         if(p) return Nodes[now].count;
         return (int)Nodes[now].accept.size();
     }
+    //wordをprefixにもつ単語の個数を返す
     int prefix(const string &word){
         return exist(word, true);
     }
-    //辞書順に数えてk番目の文字列を出力 O(|word|)(定数倍26)?
+    //辞書順に数えてk番目の文字列を返す O(|word|)(定数倍26)?
     string kth_string(int k){
         assert(k <= count());
         string res;
