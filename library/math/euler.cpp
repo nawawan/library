@@ -1,8 +1,11 @@
 //オイラー関数を作成する。
 //MOD mと互いに素なxについて、オイラー関数をφとすると
 //x^φ = 1 (mod m)となる。φはmから一意に定まる。O(√m)
+//最小のφは, φ(m)の約数のどれか
+//オイラー関数 : φ(n) -> n以下の数でnと互いに素な自然数の数
 #include <iostream>
 #include <vector>
+#include <numeric>
 using namespace std;
 long long euler_phi(long long n){
     long long res = n;
@@ -15,13 +18,13 @@ long long euler_phi(long long n){
     if(n != 1) res = res / n * (n - 1);
     return res;
 }
-
-vector<long long> euler_phi2(int n){//エラトステネスの篩的オイラー関数の値のテーブルの作成O(nlogn)?
+//エラトステネスの篩的オイラー関数の値のテーブルの作成O(nloglogn)?
+vector<long long> euler_phi2(int n){
     vector<long long> vec(n);
-    for(int i = 0; i < n; i++) vec[i] = i;
+    iota(vec.begin(), vec.end(), 0);
     for(int i = 2; i < n; i++){
         if(vec[i] == i){
-            for(int j = i; j < n; j+= i) vec[j] = vec[j] / i * (i - 1);
+            for(int j = i; j < n; j += i) vec[j] = vec[j] / i * (i - 1);
         }
     }
     return vec;

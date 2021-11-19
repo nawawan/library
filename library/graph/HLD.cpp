@@ -67,8 +67,8 @@ struct HLD{
     int dep(int x){
         return depth[x];
     }
-private:
     vector<int> hld, depth, sz, pre, nex, par, nexidx, highest;
+private:
     vector<vector<int>> G;
     int N;
     int dfs_calsz(int now, int parent = -1){
