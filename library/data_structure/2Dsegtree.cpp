@@ -50,7 +50,7 @@ public:
         }
         for(int i = sizen - 1; i >= 1; --i){
             for(int j = sizem; j < sizem * 2; ++j){
-                v[i][j] = XX(v[i * 2][j], v[i << 1 | 1][j]);
+                dat[i][j] = XX(v[i * 2][j], v[i << 1 | 1][j]);
             }
         }
         for(int i = 1; i < sizen * 2; i++){
