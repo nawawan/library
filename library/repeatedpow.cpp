@@ -11,6 +11,7 @@ long long repow(long long x, long long n){//x^nのmodのmodを計算する
 }
 
 long long repow(long long x, long long y, int MOD){
+    if(x == 0) return 0;
     if(y == 0) return 1;
     long long res = 1;
     while(y != 0){
