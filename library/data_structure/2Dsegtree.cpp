@@ -38,6 +38,7 @@ public:
     two_dimension_segment_tree(int n_, int m_) : n(n_ * 2), sizen(n_), m(m_ * 2), sizem(m_){
         dat.resize(n, vector<S>(m, id()));
     }
+    //構築O(nm)
     two_dimension_segment_tree(vector<vector<S>> &v){
         sizen = (int)v.size();
         sizem = (int)v[0].size();
@@ -64,6 +65,7 @@ public:
     S get(int i, int j){
         return dat[i + sizen][j + sizem];
     }
+    //O(log(n)log(m))
     void update(int i, int j, S a){
         i += sizen;
         j += sizem;
@@ -74,6 +76,7 @@ public:
             update_column(i, j, temp);
         }
     }
+    //O(log(|rr - lr|)log(|cr - cl|))？
     S query(int lr, int rr, int cl, int cr){
         if(lr >= rr || cl >= cr) return id();
         S vl = id(), vr = id();
