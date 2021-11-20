@@ -57,6 +57,7 @@ template<const int MOD> struct modint{
     modint pow(long long k){
         long long res = 1;
         long long v = val;
+        if(v == 0) return modint(0);
         while(k > 0){
             if(k & 1) res = res * v % MOD;
             v = v * v % MOD;
