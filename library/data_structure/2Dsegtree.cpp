@@ -24,8 +24,8 @@ private:
     S query_column(int row, int l, int r){
         if(l >= r) return id();
         S vl = id(), vr = id();
-        l += size;
-        r += size;
+        l += sizem;
+        r += sizem;
         while(r > l){
             if(l & 1) vl = XX(vl, dat[row][l++]);
             if(r & 1) vr = XX(dat[row][--r], vr);
@@ -77,8 +77,8 @@ public:
     S query(int lr, int rr, int cl, int cr){
         if(lr >= rr || cl >= cr) return id();
         S vl = id(), vr = id();
-        lr += size;
-        rr += size;
+        lr += sizen;
+        rr += sizen;
         while(rr > lr){
             if(lr & 1) {
                 vl = XX(vl, query_column(lr++, cl, cr));
