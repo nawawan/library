@@ -102,25 +102,22 @@ public:
         return dat[i][j + dat[i].size() / 2];
     }
     //O(log(n)log(m))
-    //座圧されていないものを渡す
     void update(int i, int j, S a){
-        i = lower_bound(X.begin(), X.end(), i) - X.begin();
         i += sizen;
         int id2 = lower_bound(ind[i].begin(), ind[i].end(), j) - ind[i].begin();
-        update_column(i, id2 + dat[i].size() / 2, XX(dat[i][id2 + dat[i].size() / 2], a));
+        update_column(i, id2 + dat[i].size() / 2, a);
         while(i > 1){
             i >>= 1;
-            id2 = lower_bound(ind[i].begin(), ind[i].end(), j) - ind[i].begin();
             int l = lower_bound(ind[i << 1].begin(), ind[i << 1].end(), j) - ind[i << 1].begin();
             int r = lower_bound(ind[i << 1 | 1].begin(), ind[i << 1 | 1].end(), j) - ind[i << 1 | 1].begin();
             S temp = id();
-            if(l != ind[i << 1].size() && ind[i << 1][l] == ind[i][id2]) temp = XX(temp, dat[i << 1 | 0][l + ind[i << 1].size()]);
-            if(r != ind[i << 1 | 1].size() && ind[i << 1 | 1][r] == ind[i][id2]) temp = XX(temp, dat[i << 1 | 1][r + ind[i << 1 | 1].size()]);
+            if(l != ind[i << 1].size() && ind[i << 1][l] == ind[i][id2]) temp = XX(temp, dat[i << 1 | 0][l]);
+            if(r != ind[i << 1 | 1].size() && ind[i << 1 | 1][r] == ind[i][id2]) temp = XX(temp, dat[i << 1 | 1][r]);
+            id2 = lower_bound(ind[i].begin(), ind[i].end(), j) - ind[i].begin();
             update_column(i, id2 + dat[i].size() / 2, temp);
         }
     }
     //O(log(|rr - lr|)log(|cr - cl|))？
-    //座圧されていないものを渡す
     S query(int lr, int rr, int cl, int cr){
         lr = lower_bound(X.begin(), X.end(), lr) - X.begin();
         rr = lower_bound(X.begin(), X.end(), rr) - X.begin();
