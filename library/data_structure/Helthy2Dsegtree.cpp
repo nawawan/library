@@ -45,6 +45,7 @@ private:
     }
 public:
     vector<vector<int>> ind;
+    //二次元上の点群とそのモノイドをそのまま渡す
     two_dimension_segment_tree(vector<int> &wx, vector<int> &wy, vector<S> w){
         X = wx;
         sort(X.begin(), X.end());
@@ -61,10 +62,18 @@ public:
             ind[i].erase(unique(ind[i].begin(), ind[i].end()), ind[i].end());
         }
         for(int i = sizen - 1; i >= 1; --i){
-            for(int j = 0; j < (int)ind[i * 2].size(); ++j) ind[i].push_back(ind[i * 2][j]);
-            for(int j = 0; j < (int)ind[i * 2 + 1].size(); ++j) ind[i].push_back(ind[i * 2 + 1][j]);
-            sort(ind[i].begin(), ind[i].end());
-            ind[i].erase(unique(ind[i].begin(), ind[i].end()), ind[i].end());
+            int l = 0, r = 0;
+            int ls = i * 2, rs = i * 2 + 1;
+            for(; l < (int)ind[ls].size(); ++l){
+                while(r < (int)ind[rs].size() && ind[ls][l] > ind[rs][r]){
+                    ind[i].push_back(ind[rs][r++]);
+                }
+                if(r < (int)ind[rs].size() && ind[ls][l] == ind[rs][r]) ++r;
+                ind[i].push_back(ind[ls][l]);
+            }
+            while(r < (int)ind[rs].size()){
+                ind[i].push_back(ind[rs][r++]);
+            }
         }
         dat.resize(n);
         for(int i = 1; i < n; ++i){
@@ -102,8 +111,8 @@ public:
             int l = lower_bound(ind[i << 1].begin(), ind[i << 1].end(), j) - ind[i << 1].begin();
             int r = lower_bound(ind[i << 1 | 1].begin(), ind[i << 1 | 1].end(), j) - ind[i << 1 | 1].begin();
             S temp = id();
-            if(l != ind[i << 1].size() && ind[i << 1][l] == ind[i][id]) temp = XX(temp, dat[i << 1 | 0][l]);
-            if(r != ind[i << 1 | 1].size() && ind[i << 1 | 1][r] == ind[i][id]) temp = XX(temp, dat[i << 1 | 1][r]);
+            if(l != ind[i << 1].size() && ind[i << 1][l] == ind[i][id2]) temp = XX(temp, dat[i << 1 | 0][l]);
+            if(r != ind[i << 1 | 1].size() && ind[i << 1 | 1][r] == ind[i][id2]) temp = XX(temp, dat[i << 1 | 1][r]);
             id2 = lower_bound(ind[i].begin(), ind[i].end(), j) - ind[i].begin();
             update_column(i, id2 + dat[i].size() / 2, temp);
         }

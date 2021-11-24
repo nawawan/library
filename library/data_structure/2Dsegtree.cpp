@@ -53,7 +53,7 @@ public:
                 dat[i][j] = XX(v[i * 2][j], v[i << 1 | 1][j]);
             }
         }
-        for(int i = 1; i < sizen * 2; i++){
+        for(int i = 1; i < sizen * 2; ++i){
             for(int j = sizem - 1; j >= 1; --j){
                 update_column_sub(i, j);
             }
