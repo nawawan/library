@@ -5,47 +5,25 @@
 #include <cassert>
 using namespace std;
 
-template<typename T>
 struct LiChaoTree{
 private:
-    struct line{
-        T a, b;
-    };
-    vector<T> x;
+    using line = pair<long long, long long>;
+    vector<long long> x;
     vector<line> dat;
     int sz, xsize;
     bool flag;
-    T INF;
-    bool comp(T X, T Y, bool f){
+    long long INF;
+    bool comp(long long X, long long Y, bool f){
         if(f) return X > Y;
         return X < Y;
     };
-public:
-    //X : クエリで飛んでくるx座標
-    //f : true -> 最大値クエリ, false -> 最小値クエリ
-    LiChaoTree(vector<long long>X, bool f) : flag(f) {
-        sz = 1;
-        sort(X.begin(), X.end());
-        X.erase(unique(X.begin(), X.end()), X.end());
-        xsize = X.size();
-        while(sz < xsize){
-            sz <<= 1;
-        }
-        INF = numeric_limits<T>::max();
-        if(f) INF *= -1;
-        x = X;
-        x.resize(sz, abs(INF) / 3000000000LL);
-        dat.resize(2 * sz, {0, INF});
+    long long get(line t, long long X){
+        return t.first * X + t.second;
     }
-    T get(line t, T X){
-        return t.a * X + t.b;
-    }
-    void add(line t){
-        int id = 1;
-        int xl = 0, xr = sz;
+    void add_line(line t, int id, int xl, int xr){
         while(xr - xl > 1){
             int mid = (xl + xr) / 2;
-            T lx = get(t, x[xl]), rx = get(t, x[xr - 1]), mx = get(t, x[mid]);
+            long long lx = get(t, x[xl]), rx = get(t, x[xr - 1]), mx = get(t, x[mid]);
             bool bl = comp(lx, get(dat[id], x[xl]), flag);
             bool br = comp(rx, get(dat[id], x[xr - 1]), flag);
             bool bm = comp(mx, get(dat[id], x[mid]), flag);
@@ -66,9 +44,41 @@ public:
         }
         if(comp(get(t, x[xl]), get(dat[id], x[xl]), flag)) dat[id] = t;
     }
-    T query(T X){
+public:
+    //X : クエリで飛んでくるx座標
+    //f : true -> 最大値クエリ, false -> 最小値クエリ
+    LiChaoTree(vector<long long>X, bool f) : flag(f) {
+        sz = 1;
+        sort(X.begin(), X.end());
+        X.erase(unique(X.begin(), X.end()), X.end());
+        xsize = X.size();
+        while(sz < xsize){
+            sz <<= 1;
+        }
+        INF = numeric_limits<long long>::max();
+        if(f) INF *= -1;
+        x = X;
+        x.resize(sz, abs(INF) / 3000000000LL);
+        dat.resize(2 * sz, {0, INF});
+    }
+    void add(line t){
+        add_line(t, 1, 0, sz);
+    }
+    void add(line t, long long l, long long r){
+        int idl = lower_bound(x.begin(), x.end(), l) - x.begin();
+        int idr = lower_bound(x.begin(), x.end(), r) - x.begin();
+        idl += sz;
+        idr += sz;
+        int szl = 1, szr = 1;
+        while(l < r){
+            if(l & 1){
+
+            }
+        }
+    }
+    long long query(long long X){
         int ind = lower_bound(x.begin(), x.end(), X) - x.begin();
-        T res = INF;
+        long long res = INF;
         ind += sz;
         while(ind > 0){
             if(!flag) res = min(res, get(dat[ind], X));
