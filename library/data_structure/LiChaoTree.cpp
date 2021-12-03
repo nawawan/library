@@ -12,7 +12,6 @@ private:
     vector<line> dat;
     int sz, xsize;
     bool flag;
-    long long INF;
     bool comp(long long X, long long Y, bool f){
         if(f) return X > Y;
         return X < Y;
@@ -45,9 +44,10 @@ private:
         if(comp(get(t, x[xl]), get(dat[id], x[xl]), flag)) dat[id] = t;
     }
 public:
+    long long INF;
     //X : クエリで飛んでくるx座標
     //f : true -> 最大値クエリ, false -> 最小値クエリ
-    LiChaoTree(vector<long long>X, bool f) : flag(f) {
+    LiChaoTree(vector<long long>X, bool f = false) : flag(f) {
         sz = 1;
         sort(X.begin(), X.end());
         X.erase(unique(X.begin(), X.end()), X.end());
@@ -67,13 +67,25 @@ public:
     void add(line t, long long l, long long r){
         int idl = lower_bound(x.begin(), x.end(), l) - x.begin();
         int idr = lower_bound(x.begin(), x.end(), r) - x.begin();
+        int tl = idl, tr = idr;
         idl += sz;
         idr += sz;
         int szl = 1, szr = 1;
-        while(l < r){
-            if(l & 1){
-
+        while(idl < idr){
+            if(idl & 1){
+                add_line(t, idl, tl, tl + szl);
+                tl += szl;
+                ++idl;
             }
+            if(idr & 1){
+                --idr;
+                add_line(t, idr, tr - szr, tr);
+                tr -= szr;
+            }
+            idr >>= 1;
+            idl >>= 1;
+            szl <<= 1;
+            szr <<= 1;
         }
     }
     long long query(long long X){
