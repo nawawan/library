@@ -14,8 +14,8 @@ private:
     void update_sub(int k, int k2){
         int idl = lower_bound(ind[k << 1 | 0].begin(), ind[k << 1 | 0].end(), ind[k][k2]) - ind[k << 1 | 0].begin();
         int idr = lower_bound(ind[k << 1 | 1].begin(), ind[k << 1 | 1].end(), ind[k][k2]) - ind[k << 1 | 1].begin();
-        if(idl == ind[k << 1].size() || ind[k << 1][idl] != ind[k][k2]) dat[k][k2 + ind[k].size()] = dat[k << 1 | 1][idr + ind[k << 1 | 1].size()];
-        else if(idr == ind[k << 1 | 1].size() || ind[k << 1 | 1][idr] != ind[k][k2]) dat[k][k2 + ind[k].size()]  = dat[k << 1][idl + ind[k << 1].size()];
+        if(idl == (int)ind[k << 1].size() || ind[k << 1][idl] != ind[k][k2]) dat[k][k2 + ind[k].size()] = dat[k << 1 | 1][idr + ind[k << 1 | 1].size()];
+        else if(idr == (int)ind[k << 1 | 1].size() || ind[k << 1 | 1][idr] != ind[k][k2]) dat[k][k2 + ind[k].size()]  = dat[k << 1][idl + ind[k << 1].size()];
         else dat[k][k2 + ind[k].size()] = XX(dat[k << 1 | 0][idl + ind[k << 1].size()], dat[k << 1 | 1][idr + ind[k << 1 | 1].size()]);
     }
     void update_column_sub(int k, int k2){
@@ -85,7 +85,7 @@ public:
             dat[hid + sizen][wid + ind[hid + sizen].size()] = XX(dat[hid + sizen][wid + ind[hid + sizen].size()], w[i]);
         }
         for(int i = sizen - 1; i >= 1; --i){
-            for(int j = 0; j < dat[i].size() / 2; ++j){
+            for(int j = 0; j < (int)dat[i].size() / 2; ++j){
                 update_sub(i, j);
             }
         }
