@@ -23,7 +23,7 @@ long long mod_inverse(long long a, long long m){
 struct mod_com{
     vector<long long> fact;
     int mod;
-    mod_com(long long p){//k < pに対してk!mod pのテーブルを作成
+    mod_com(long long p){//k < nに対してk!mod pのテーブルを作成
         fact.resize(MAX);//nに合わせてMAXを変更すれば良い
         mod = p;
         for(int i = 0; i < MAX; i++){

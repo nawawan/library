@@ -34,19 +34,6 @@ map<T, T> divide(T n){//素因数分解
     return res;
 }
 
-vector<int> div(int n){//高速素因数分解用の配列(n ~ 10^6ならOK)
-    vector<int> d(n + 1, 1);
-    for(int i = 2; i <= n; i++){
-        if(d[i] != 1) continue;
-        int t = i;
-        while(t <= n){
-            d[t] = i;
-            t += i;
-        }
-    }
-    return d;
-}
-
 //こっちが正式な高速素因数分解のコード(osa_k法)
 vector<int> sieve(int n){
     vector<int> res(n, 0);
