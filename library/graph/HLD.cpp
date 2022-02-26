@@ -38,8 +38,7 @@ struct HLD{
         return u;
     }
     //パスが被覆する連結成分の始点と終点を返す(O(log(N)))
-    //LCAを求めていく感じ
-    //firstがhldにおいて小さいindexとなるように
+    //hld上のindexが返される
     vector<pair<int, int>> query(int u, int v){
         vector<pair<int, int>> ret;
         while(highest[u] != highest[v]){
