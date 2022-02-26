@@ -38,13 +38,14 @@ struct Dinic{
             int now = q.front();
             used[now] = true;
             q.pop();
-            for(auto [to, cap, rev] : D.G[now]){
+            for(auto [to, cap, rev] : G[now]){
                 if(cap && !used[to]){
                     used[to] = true;
                     q.push(to);
                 }
             }
         }
+        return used;
     }
 private:
     void bfs(int s){
