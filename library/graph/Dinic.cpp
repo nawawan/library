@@ -9,7 +9,7 @@ struct Dinic{
         int to;
         T cap;
         int rev;
-        edge(int t, int c, int r) : to(t), cap(c), rev(r) {}
+        edge(int t, T c, int r) : to(t), cap(c), rev(r) {}
     };
     int V;
     T INF;
@@ -28,6 +28,22 @@ struct Dinic{
             used.assign(V, 0);
             long long f;
             while((f = dfs(s, t, INF)) > 0) flow += f;
+        }
+    }
+    vector<bool> min_cut(int s){
+        queue<int> q;
+        vector<bool> used(V);
+        q.push(s);
+        while(!q.empty()){
+            int now = q.front();
+            used[now] = true;
+            q.pop();
+            for(auto [to, cap, rev] : D.G[now]){
+                if(cap && !used[to]){
+                    used[to] = true;
+                    q.push(to);
+                }
+            }
         }
     }
 private:
