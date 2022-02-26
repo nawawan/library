@@ -56,11 +56,8 @@ struct Binary_Trie{
         for(int i = MAX_LOG - 1; i >= 0; i--){
             bool f = xor_val & ((T)1 << i);
             if((t->nex[f] ? t->nex[f]->count : 0) < k){
-                if(t->nex[f]){
-                    k -= t->nex[f];
-                    sum += t->sum;
-                }
                 k -= (t->nex[f] ? t->nex[f]->count : 0);
+                res += (t->nex[f] ? t->nex[f]->sum : 0);
                 num |= ((T)1 << i);
                 t = t->nex[f ^ 1];
             }
@@ -140,9 +137,6 @@ struct Binary_Trie{
         return root->count;
     }
 };
-
-
-
 
 
 
