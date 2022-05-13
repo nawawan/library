@@ -2,7 +2,7 @@
 #include <vector>
 #include <cassert>
 using namespace std;
-//ax + by = gcd(x, y)をとく(解はx, y)
+//ax + by = gcd(a, b)をとく(解はx, y)
 long long extgcd(long long a, long long b, long long &x, long long &y){
     long long d = a;
     if(b != 0){
