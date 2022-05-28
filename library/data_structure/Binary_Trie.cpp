@@ -8,7 +8,8 @@ struct Binary_Trie{
     struct Node{
         Node *nex[2];
         int count;
-        Node() : nex{nullptr, nullptr}, count(0){}
+        long long sum;
+        Node() : nex{nullptr, nullptr}, count(0), sum(0){}
     };
     Node *root;
     //存在しなければnullを返す
@@ -24,12 +25,14 @@ struct Binary_Trie{
     void insert(Node *t, T num, int d, T xor_val = 0){
         for(int i = MAX_LOG - 1; i >= 0; i--){
             t->count += d;
+            t->sum += (long long)num * d;
             bool f = xor_val & ((T)1 << i);
             f ^= (bool)(num & ((T)1 << i));
             if(!t->nex[f]) t->nex[f] = new Node();
             t = t->nex[f];
         }
         t->count += d;
+        t->sum += (long long)num * d;
     }
     T kth_element(Node *t, int k, T xor_val = 0){
         T res = 0;
@@ -45,6 +48,23 @@ struct Binary_Trie{
             }
         }
         return res;
+    }
+    long long kth_element(Node *t, int k, T xor_val = 0){
+        T num = 0;
+        long long res = 0;
+        for(int i = MAX_LOG - 1; i >= 0; i--){
+            bool f = xor_val & ((T)1 << i);
+            if((t->nex[f] ? t->nex[f]->count : 0) < k){
+                k -= (t->nex[f] ? t->nex[f]->count : 0);
+                res += (t->nex[f] ? t->nex[f]->sum : 0);
+                num |= ((T)1 << i);
+                t = t->nex[f ^ 1];
+            }
+            else{
+                t = t->nex[f];
+            }
+        }
+        return res + (long long)res * k;
     }
     int count_less(Node* t, T num, T xor_val = 0){
         int res = 0;
@@ -77,6 +97,11 @@ struct Binary_Trie{
     T kth_element(int k, T xor_val = 0){
         assert(root->count >= k);
         return kth_element(root, k, xor_val);
+    }
+    long long kth_element_sum(int k, T xor_val = 0){
+        if(k == 0) return 0;
+        assert(root->count >= k);
+        return kth_element_sum(root, k, xor_val);
     }
     T min_element(T xor_val = 0){
         assert(root->count >= 1);
