@@ -27,11 +27,11 @@ struct LCA{
     }
     int lca(int v, int u){//lcaを求める
         if(depth[v] < depth[u]) swap(v, u);
-        for(int k = 0; k < 41; k++){
+        for(int k = 0; k < 25; k++){
             if((depth[v] - depth[u]) >> k & 1) v = parent[k][v];
         }
         if(v == u) return u;
-        for(int k = 40; k >= 0; k--){
+        for(int k = 24; k >= 0; k--){
             if(parent[k][u] != parent[k][v]){
                 u = parent[k][u];
                 v = parent[k][v];
