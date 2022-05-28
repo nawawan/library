@@ -7,7 +7,7 @@ struct LCA{
     int N;
     LCA(){}
     LCA(vector<vector<int>> &g) : N(g.size()), depth(g.size()), G(g){
-        parent.resize(41, vector<int>(N));
+        parent.resize(25, vector<int>(N));
     }
     LCA(int n): N(n), depth(n), G(n){
         parent.resize(41, vector<int>(n));
@@ -18,7 +18,7 @@ struct LCA{
     }
     void build(int root = 0){
         dfs(root, -1, 0, G);
-        for(int i = 0; i < 40; i++){
+        for(int i = 0; i < 25; i++){
             for(int j = 0; j < N; j++){
                 if(parent[i][j] == -1) parent[i + 1][j] = -1;
                 else parent[i + 1][j] = parent[i][parent[i][j]];
