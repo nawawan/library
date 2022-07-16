@@ -16,8 +16,8 @@ struct BIT{
     区間 [l, r)(0-indexed)のsumを知りたいとき
     sum(r) - sum(l);
     */
-    T sum(T t){
-        long long res = 0;
+    T sum(int t){
+        T res = 0;
         assert(t < N);
         while(t > 0){
             res += num.at(t);
