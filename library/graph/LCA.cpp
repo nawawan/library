@@ -10,7 +10,7 @@ struct LCA{
         parent.resize(25, vector<int>(N));
     }
     LCA(int n): N(n), depth(n), G(n){
-        parent.resize(41, vector<int>(n));
+        parent.resize(25, vector<int>(n));
     }
     void add_edge(int u, int v){
         G[u].push_back(v);
@@ -18,12 +18,30 @@ struct LCA{
     }
     void build(int root = 0){
         dfs(root, -1, 0, G);
-        for(int i = 0; i < 25; i++){
+        for(int i = 0; i < 24; i++){
             for(int j = 0; j < N; j++){
                 if(parent[i][j] == -1) parent[i + 1][j] = -1;
                 else parent[i + 1][j] = parent[i][parent[i][j]];
             }
         }
+    }
+    int kth_ancestor(int v, int k){
+        assert(k >= 0);
+        if(depth[v] < k) return 0;
+        int temp = v;
+        int now = 0;
+        while(k > 0){
+            if(k & 1) temp = parent[now][temp];
+            ++now;
+            k >>= 1;
+        }
+        return temp;
+    }
+    int next_node(int u, int v){//return next node of u in path (u->v)
+        int t = lca(u, v);
+        if(t != u && t != v) return parent[0][u];
+        else if(t == v) return parent[0][u];
+        return kth_ancestor(v, depth[v] - depth[u] - 1);
     }
     int lca(int v, int u){//lcaを求める
         if(depth[v] < depth[u]) swap(v, u);
