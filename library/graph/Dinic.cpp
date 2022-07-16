@@ -9,7 +9,7 @@ struct Dinic{
         int to;
         T cap;
         int rev;
-        edge(int t, int c, int r) : to(t), cap(c), rev(r) {}
+        edge(int t, T c, int r) : to(t), cap(c), rev(r) {}
     };
     int V;
     T INF;
