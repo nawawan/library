@@ -8,6 +8,9 @@ template<typename T> struct mat{
     vector<vector<T>> matrix;//行列
     int N, M;
     mat(){}
+    mat(int n): N(n), M(n){
+        matrix.resize(n, vector<T>(n));
+    }
     mat(int n, int m): N(n), M(m){
         matrix.resize(n, vector<T>(m));
     }
