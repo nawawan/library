@@ -49,7 +49,7 @@ struct Binary_Trie{
         }
         return res;
     }
-    long long kth_element(Node *t, int k, T xor_val = 0){
+    long long kth_element_sum(Node *t, int k, T xor_val = 0){
         T num = 0;
         long long res = 0;
         for(int i = MAX_LOG - 1; i >= 0; i--){
