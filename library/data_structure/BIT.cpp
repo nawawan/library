@@ -12,6 +12,11 @@ struct BIT{
     BIT(int n) : N(n + 1){
         num.resize(N, 0);
     }
+    BIT() : N(0){}
+    void resize(int n){
+        N = n + 1;
+        num.resize(N);
+    }
     /*
     区間 [l, r)(0-indexed)のsumを知りたいとき
     sum(r) - sum(l);
