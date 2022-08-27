@@ -90,16 +90,17 @@ template<const int MOD> struct modint{
 const int MOD = 1000000007;
 using mint = modint<MOD>;
 const int MAX = 410000;
-mint fac[MAX], finv[MAX], inv[MAX];
+mint fac[MAX], finv[MAX];
 //MAX < MOD
 void COMinit(){
     fac[0] = fac[1] = 1;
     finv[0] = finv[1] = 1;
-    inv[1] = 1;
-    for(int i = 2; i < MAX; i++){
+    for(int i = 2; i < MAX; ++i){
         fac[i] = fac[i - 1] * i;
-        inv[i] = mint(MOD) - inv[MOD % i] * (MOD / i);
-        finv[i] = finv[i - 1] * inv[i];
+    }
+    finv[MAX - 1] = fac[MAX - 1].inv();
+    for(int i = MAX - 2; i >= 0; --i){
+        finv[i] = finv[i + 1] * (i + 1);
     }
 }
 mint COM(int n, int k){
