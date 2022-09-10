@@ -42,6 +42,12 @@ struct RollingHash{
             }
         }
     }
+    //S[num...|S|) + S[0..num)のハッシュ値を返す
+    //n = |S|
+    ull shift(vector<ull> &hash, int num, int n){
+        ull temp = CalMod(POSITIVIZER + hash.back() - Mul(hash[num], power_base[n - num]));
+        return CalMod(Mul(temp, power_base[num]) + hash[num]);
+    }
     vector<ull> makehash(string &S){
         int sz = (int)S.size();
         vector<ull> hash(sz + 1);
