@@ -5,6 +5,12 @@
 using namespace std;
 template<typename T>
 struct Dinic{
+    struct edge{
+        int to;
+        T cap;
+        int rev;
+        edge(int t, T c, int r) : to(t), cap(c), rev(r) {}
+    };
     Dinic(int N): INF(numeric_limits<T>::max()), V(N), used(N), level(N), G(N){}
     void add(int u, int v, T c){
         G[u].emplace_back(v, c, (int)G[v].size());
@@ -33,12 +39,6 @@ struct Dinic{
         G[e.to][e.rev].cap = -new_cap;
     }
 private:
-    struct edge{
-        int to;
-        T cap;
-        int rev;
-        edge(int t, T c, int r) : to(t), cap(c), rev(r) {}
-    };
     int V;
     T INF;
     vector<int> level, used;
