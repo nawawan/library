@@ -64,7 +64,7 @@ struct Binary_Trie{
                 t = t->nex[f];
             }
         }
-        return res + (long long)res * k;
+        return res + (long long)num * k;
     }
     int count_less(Node* t, T num, T xor_val = 0){
         int res = 0;
