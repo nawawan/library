@@ -48,6 +48,17 @@ struct RollingHash{
         ull temp = CalMod(POSITIVIZER + hash.back() - Mul(hash[num], power_base[n - num]));
         return CalMod(Mul(temp, power_base[num]) + hash[num]);
     }
+
+    // 二つの文字列S, Tのhash l, rがあるとき、 R=S+Tについて R[0...n)のhashを返す
+    ull concat(vector<ull> &l, vector<ull> &r, int L, int n){
+        if(n <= L){
+            return query(l, 0, n);
+        }
+        ull ll = query(l, 0, L);
+        ull rr = query(r, 0, n - L);
+        return CalMod(Mul(ll, power_base[n - L]) + rr);
+    }
+
     vector<ull> makehash(string &S){
         int sz = (int)S.size();
         vector<ull> hash(sz + 1);
